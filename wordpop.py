@@ -41,7 +41,7 @@ def lines_to_word_array(lines):
     words = []
     for line in lines:
         words.extend(line.split())
-    return words
+    return map(lambda x:x.lower(), words)
 
 
 def parse(f):
