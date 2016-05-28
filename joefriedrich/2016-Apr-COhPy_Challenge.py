@@ -41,9 +41,9 @@ def count_words(words):
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
     )
 
-def sort_words_by_count(from_dictionary):
+def sort_words_by_count(word_counts):
     organized_words = []
-    for entry in from_dictionary.items():
+    for entry in word_counts.items():
         organized_words.append(entry)
 
     return sorted(organized_words, key = lambda entry: entry[1], reverse = 1)
