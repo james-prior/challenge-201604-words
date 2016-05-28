@@ -73,8 +73,7 @@ def main():
             break
 
         print('')
-        word_test = word_pattern.search(user_choice)
-        if word_test != None:
+        if word_pattern.search(user_choice):
             if user_choice in word_counts:
                 print(user_choice + ' => ' + str(word_counts[user_choice]))
             else:
