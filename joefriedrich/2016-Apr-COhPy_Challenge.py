@@ -19,7 +19,7 @@ def get_user_input():
     return input(
         'Type the number of the Gutenberg publication you wish to see:  ')
 
-def spam_gutenberg_website(book_number):
+def get_book_from_gutenberg_website(book_number):
     class Namespace:
         pass
     foo = Namespace()
@@ -52,7 +52,7 @@ def main():
     book_number = get_user_input()
 
     print('\nGrabbing website data...')
-    website = spam_gutenberg_website(book_number)
+    website = get_book_from_gutenberg_website(book_number)
 
     find_book = re.split(r'\*{3}[\s\w]*\*{3}', website.text)
     book = find_book[1]
