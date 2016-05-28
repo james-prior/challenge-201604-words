@@ -32,7 +32,7 @@ def creating_a_dictionary(from_words_list):
                 new_dictionary[word] += 1
             else:
                 new_dictionary[word] = 1
-        elif word == 'A' or word == 'a' or word == 'I':
+        elif word in ('A', 'a', 'I'):
             if word in new_dictionary:
                 new_dictionary[word] += 1
             else:
