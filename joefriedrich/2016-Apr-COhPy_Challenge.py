@@ -20,12 +20,13 @@ from collections import Counter
 VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
 
 def get_book_from_gutenberg_website(book_number):
-    class Namespace:
-        pass
-    foo = Namespace()
-    filename = 'efloehr/pg%s.txt' % book_number
-    foo.text = open(filename).read()
-    return foo
+    if True:  # Temporary hack to read file instead of website.
+        class Namespace:
+            pass
+        foo = Namespace()
+        filename = 'efloehr/pg%s.txt' % book_number
+        foo.text = open(filename).read()
+        return foo
 
     url = 'http://www.gutenberg.org/cache/epub/{0}/pg{0}.txt'.format(
         book_number)
