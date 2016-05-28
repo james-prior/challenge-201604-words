@@ -75,10 +75,7 @@ def main():
         print('')
         if word_pattern.search(user_choice):
             word = user_choice
-            if word in word_counts:
-                print(word, '=>', word_counts[word])
-            else:
-                print('***The word does not appear in the text.***')
+            print(word, '=>', word_counts[word])
         else:
             for item in word_counts.most_common(int(user_choice)):
                 print(item)
