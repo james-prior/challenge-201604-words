@@ -19,7 +19,7 @@ def get_user_input():
     return input(
         'Type the number of the Gutenberg publication you wish to see:  ')
 
-def spam_gutenberg_website():
+def spam_gutenberg_website(book_number):
     return requests.get(
         'http://www.gutenberg.org/cache/epub/' + book_number +
         '/pg' + book_number + '.txt')
@@ -46,44 +46,48 @@ def organizing_data(from_dictionary):
 
     return sorted(organized_words, key = lambda entry: entry[1], reverse = 1)
 
-print('Welcome to the Friedrich Gutenberg word-counter thingy.')
-book_number = get_user_input()
+def main():
+    print('Welcome to the Friedrich Gutenberg word-counter thingy.')
+    book_number = get_user_input()
 
-print('\nGrabbing website data...')
-website = spam_gutenberg_website()
+    print('\nGrabbing website data...')
+    website = spam_gutenberg_website(book_number)
 
-find_book = re.split(r'\*{3}[\s\w]*\*{3}', website.text)
-book = find_book[1]
+    find_book = re.split(r'\*{3}[\s\w]*\*{3}', website.text)
+    book = find_book[1]
 
-find_words = re.compile(r'[a-zA-Z]+')
-words = find_words.findall(book)
+    find_words = re.compile(r'[a-zA-Z]+')
+    words = find_words.findall(book)
 
-print('Creating dictionary...')
-web_dictionary = creating_a_dictionary(words)
+    print('Creating dictionary...')
+    web_dictionary = creating_a_dictionary(words)
 
-print('Organizing data...')
-count_words = organizing_data(web_dictionary)
+    print('Organizing data...')
+    count_words = organizing_data(web_dictionary)
 
-while True:
-    print('\nWhat would you like to see?')
-    print('-Type a word to see how many times it appears.')
-    print('-Type a number to see that number of top words.')
-    print('-Type a super huge number to get all words.')
-    user_choice = input('-Type q to quit:  ')
-    print('')
+    while True:
+        print('\nWhat would you like to see?')
+        print('-Type a word to see how many times it appears.')
+        print('-Type a number to see that number of top words.')
+        print('-Type a super huge number to get all words.')
+        user_choice = input('-Type q to quit:  ')
+        print('')
 
-    word_test = find_words.search(user_choice)
+        word_test = find_words.search(user_choice)
 
-    if user_choice == 'q':
-        break
-    elif word_test != None:
-        if user_choice in web_dictionary:
-            print(user_choice + ' => ' + str(web_dictionary[user_choice]))
+        if user_choice == 'q':
+            break
+        elif word_test != None:
+            if user_choice in web_dictionary:
+                print(user_choice + ' => ' + str(web_dictionary[user_choice]))
+            else:
+                print('***The word does not appear in the text.***')
         else:
-            print('***The word does not appear in the text.***')
-    else:
-        user_choice = int(user_choice)
-        if user_choice >= len(count_words):
-            user_choice = len(count_words)
-        for user_number in range(0, int(user_choice)):
-            print(count_words[user_number])
+            user_choice = int(user_choice)
+            if user_choice >= len(count_words):
+                user_choice = len(count_words)
+            for user_number in range(0, int(user_choice)):
+                print(count_words[user_number])
+
+if __name__ == '__main__':
+    main()
