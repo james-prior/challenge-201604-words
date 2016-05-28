@@ -41,7 +41,7 @@ def count_words(words):
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
     )
 
-def organizing_data(from_dictionary):
+def sort_words_by_count(from_dictionary):
     organized_words = []
     for entry in from_dictionary.items():
         organized_words.append(entry)
@@ -65,7 +65,7 @@ def main():
     word_counts = count_words(words)
 
     print('Organizing data...')
-    sorted_word_counts = organizing_data(word_counts)
+    sorted_word_counts = sort_words_by_count(word_counts)
 
     while True:
         print('\nWhat would you like to see?')
