@@ -74,8 +74,9 @@ def main():
 
         print('')
         if word_pattern.search(user_choice):
-            if user_choice in word_counts:
-                print(user_choice + ' => ' + str(word_counts[user_choice]))
+            word = user_choice
+            if word in word_counts:
+                print(word + ' => ' + str(word_counts[word]))
             else:
                 print('***The word does not appear in the text.***')
         else:
