@@ -23,7 +23,8 @@ def spam_gutenberg_website(book_number):
     class Namespace:
         pass
     foo = Namespace()
-    foo.text = open('efloehr/pg83.txt').read()
+    filename = 'efloehr/pg%s.txt' % book_number
+    foo.text = open(filename).read()
     return foo
 
     return requests.get(
