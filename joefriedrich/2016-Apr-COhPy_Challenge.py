@@ -57,8 +57,8 @@ def main():
     m = re.search(book_pattern, web_page.text, re.MULTILINE)
     book = m.group('body')
 
-    find_words = re.compile(r'[a-zA-Z]+')
-    words = find_words.findall(book)
+    word_pattern = re.compile(r'[a-zA-Z]+')
+    words = word_pattern.findall(book)
 
     print('Creating dictionary...')
     word_counts = count_words(words)
@@ -71,7 +71,7 @@ def main():
         user_choice = input('-Type q to quit:  ')
         print('')
 
-        word_test = find_words.search(user_choice)
+        word_test = word_pattern.search(user_choice)
 
         if user_choice == 'q':
             break
