@@ -45,8 +45,8 @@ def main():
     print('\nGrabbing book from website.')
     web_page = get_book_from_gutenberg_website(book_number)
 
-    find_book = re.split(r'\*{3}[\s\w]*\*{3}', web_page.text)
-    book = find_book[1]
+    book_header_body_tail = re.split(r'\*{3}[\s\w]*\*{3}', web_page.text)
+    book = book_header_body_tail[1]
 
     find_words = re.compile(r'[a-zA-Z]+')
     words = find_words.findall(book)
