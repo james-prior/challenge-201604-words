@@ -32,13 +32,13 @@ def spam_gutenberg_website(book_number):
         '/pg' + book_number + '.txt')
 
 def creating_a_dictionary(from_words_list):
-    new_dictionary = {}
+    word_counts = {}
     for word in from_words_list:
         if len(word) > 1 or word in ('A', 'a', 'I'):
-            if word not in new_dictionary:
-                new_dictionary[word] = 0
-            new_dictionary[word] += 1
-    return new_dictionary
+            if word not in word_counts:
+                word_counts[word] = 0
+            word_counts[word] += 1
+    return word_counts
 
 def organizing_data(from_dictionary):
     organized_words = []
