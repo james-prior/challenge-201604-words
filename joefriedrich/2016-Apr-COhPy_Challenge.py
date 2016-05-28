@@ -20,6 +20,12 @@ def get_user_input():
         'Type the number of the Gutenberg publication you wish to see:  ')
 
 def spam_gutenberg_website(book_number):
+    class Namespace:
+        pass
+    foo = Namespace()
+    foo.text = open('efloehr/pg83.txt').read()
+    return foo
+
     return requests.get(
         'http://www.gutenberg.org/cache/epub/' + book_number +
         '/pg' + book_number + '.txt')
