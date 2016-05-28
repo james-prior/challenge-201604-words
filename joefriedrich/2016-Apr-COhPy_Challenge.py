@@ -78,7 +78,8 @@ def main():
             word = user_choice
             print(word, '=>', word_counts[word])
         else:
-            for item in word_counts.most_common(int(user_choice)):
+            n = int(user_choice)
+            for item in word_counts.most_common(n):
                 print(item)
 
 if __name__ == '__main__':
