@@ -16,10 +16,13 @@ import requests
 import re
 
 def get_user_input():
-    return input('Type the number of the Gutenberg publication you wish to see:  ')
+    return input(
+        'Type the number of the Gutenberg publication you wish to see:  ')
 
 def spam_gutenberg_website():
-    return requests.get('http://www.gutenberg.org/cache/epub/' + book_number + '/pg' + book_number + '.txt')
+    return requests.get(
+        'http://www.gutenberg.org/cache/epub/' + book_number +
+        '/pg' + book_number + '.txt')
 
 def creating_a_dictionary(from_words_list):
     new_dictionary = {}
@@ -61,7 +64,7 @@ web_dictionary = creating_a_dictionary(words)
 print('Organizing data...')
 count_words = organizing_data(web_dictionary)
 
-while(True):
+while True:
     print('\nWhat would you like to see?')
     print('-Type a word to see how many times it appears.')
     print('-Type a number to see that number of top words.')
@@ -71,7 +74,7 @@ while(True):
 
     word_test = find_words.search(user_choice)
 
-    if user_choice == 'q' :
+    if user_choice == 'q':
         break
     elif word_test != None:
         if user_choice in web_dictionary:
