@@ -27,9 +27,8 @@ def get_book_from_gutenberg_website(book_number):
     foo.text = open(filename).read()
     return foo
 
-    url = (
-        'http://www.gutenberg.org/cache/epub/' + book_number +
-        '/pg' + book_number + '.txt')
+    url = 'http://www.gutenberg.org/cache/epub/{0}/pg{0}.txt'.format(
+        book_number)
     return requests.get(url)
 
 def count_words(words):
