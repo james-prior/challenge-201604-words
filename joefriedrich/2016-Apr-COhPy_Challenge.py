@@ -15,6 +15,8 @@
 import requests
 import re
 
+VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
+
 def get_user_input():
     return input(
         'Type the number of the Gutenberg publication you wish to see:  ')
@@ -34,7 +36,7 @@ def get_book_from_gutenberg_website(book_number):
 def creating_a_dictionary(from_words_list):
     word_counts = {}
     for word in from_words_list:
-        if len(word) > 1 or word in ('A', 'a', 'I'):
+        if len(word) > 1 or word in VALID_ONE_LETTER_WORDS:
             if word not in word_counts:
                 word_counts[word] = 0
             word_counts[word] += 1
