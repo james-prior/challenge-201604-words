@@ -42,9 +42,7 @@ def count_words(words):
     )
 
 def sort_words_by_count(word_counts):
-    organized_words = []
-    for entry in word_counts.items():
-        organized_words.append(entry)
+    organized_words = word_counts.items()
 
     return sorted(organized_words, key = lambda entry: entry[1], reverse = 1)
 
