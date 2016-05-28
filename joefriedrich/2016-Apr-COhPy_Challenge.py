@@ -82,10 +82,10 @@ def main():
             else:
                 print('***The word does not appear in the text.***')
         else:
-            user_choice = int(user_choice)
-            if user_choice >= len(sorted_word_counts):
-                user_choice = len(sorted_word_counts)
-            for user_number in range(0, int(user_choice)):
+            n = int(user_choice)
+            if n >= len(sorted_word_counts):
+                n = len(sorted_word_counts)
+            for user_number in range(0, int(n)):
                 print(sorted_word_counts[user_number])
 
 if __name__ == '__main__':
