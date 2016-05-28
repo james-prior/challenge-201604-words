@@ -33,12 +33,7 @@ def spam_gutenberg_website(book_number):
 def creating_a_dictionary(from_words_list):
     new_dictionary = {}
     for word in from_words_list:
-        if len(word) > 1:
-            if word in new_dictionary:
-                new_dictionary[word] += 1
-            else:
-                new_dictionary[word] = 1
-        elif word in ('A', 'a', 'I'):
+        if len(word) > 1 or word in ('A', 'a', 'I'):
             if word in new_dictionary:
                 new_dictionary[word] += 1
             else:
