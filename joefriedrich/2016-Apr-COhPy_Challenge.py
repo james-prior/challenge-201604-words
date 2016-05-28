@@ -85,7 +85,7 @@ def main():
             n = int(user_choice)
             if n >= len(sorted_word_counts):
                 n = len(sorted_word_counts)
-            for user_number in range(int(n)):
+            for user_number in range(n):
                 print(sorted_word_counts[user_number])
 
 if __name__ == '__main__':
