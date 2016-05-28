@@ -60,7 +60,7 @@ def main():
     word_pattern = re.compile(r'[a-zA-Z]+')
     words = word_pattern.findall(book)
 
-    print('Creating dictionary...')
+    print('Counting words.')
     word_counts = count_words(words)
 
     while True:
