@@ -19,10 +19,6 @@ from collections import Counter
 
 VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
 
-def get_user_input():
-    return input(
-        'Type the number of the Gutenberg publication you wish to see:  ')
-
 def get_book_from_gutenberg_website(book_number):
     class Namespace:
         pass
@@ -43,7 +39,8 @@ def count_words(words):
 
 def main():
     print('Welcome to the Friedrich Gutenberg word-counter thingy.')
-    book_number = get_user_input()
+    book_number = input(
+        'Type the number of the Gutenberg publication you wish to see:  ')
 
     print('\nGrabbing website data...')
     website = get_book_from_gutenberg_website(book_number)
