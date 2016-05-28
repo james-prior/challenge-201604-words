@@ -28,7 +28,7 @@ class WordCounter:
         assert isinstance(genexp_text_sanitized, GeneratorType)
 
         with open(file_words_eng, 'rt') as file_words_eng:
-            dict_words_english = list(set([eng_word.lower().rstrip('\n') for eng_word in file_words_eng.readlines()]))
+            dict_words_english = set([eng_word.lower().rstrip('\n') for eng_word in file_words_eng.readlines()])
 
         count_words_master = Counter()
 
