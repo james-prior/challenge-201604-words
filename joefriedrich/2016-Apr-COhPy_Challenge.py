@@ -69,13 +69,12 @@ def main():
         print('-Type a number to see that number of top words.')
         print('-Type a super huge number to get all words.')
         user_choice = input('-Type q to quit:  ')
-        print('')
-
-        word_test = word_pattern.search(user_choice)
-
-        if user_choice == 'q':
+        if user_choice.lower() == 'q':
             break
-        elif word_test != None:
+
+        print('')
+        word_test = word_pattern.search(user_choice)
+        if word_test != None:
             if user_choice in word_counts:
                 print(user_choice + ' => ' + str(word_counts[user_choice]))
             else:
