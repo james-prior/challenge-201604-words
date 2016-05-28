@@ -45,8 +45,17 @@ def main():
     print('\nGrabbing book from website.')
     web_page = get_book_from_gutenberg_website(book_number)
 
-    book_header_body_tail = re.split(r'\*{3}[\s\w]*\*{3}', web_page.text)
-    book = book_header_body_tail[1]
+    book_pattern = (
+        r'(?P<gutenberg_header>'
+            r'^\*{2,} START OF THIS PROJECT GUTENBERG EBOOK.*\n)'
+        r'(?P<body>(.*\n)*?)'
+        r'(?P<gutenberg_tail>'
+            r'^\*{2,} (END OF THIS PROJECT GUTENBERG EBOOK|Notes:).*\n)'
+        # r'(?P<gutenberg_tail>^\*{2,} *Notes:)'
+    )
+
+    m = re.search(book_pattern, web_page.text, re.MULTILINE)
+    book = m.group('body')
 
     find_words = re.compile(r'[a-zA-Z]+')
     words = find_words.findall(book)
