@@ -42,9 +42,8 @@ def count_words(words):
     )
 
 def sort_words_by_count(word_counts):
-    organized_words = word_counts.items()
-
-    return sorted(organized_words, key = lambda entry: entry[1], reverse = 1)
+    return sorted(
+        word_counts.items(), key = lambda entry: entry[1], reverse = 1)
 
 def main():
     print('Welcome to the Friedrich Gutenberg word-counter thingy.')
