@@ -16,6 +16,7 @@ import requests
 import re
 
 from collections import Counter
+from itertools import islice
 
 VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
 
@@ -82,9 +83,8 @@ def main():
             else:
                 print('***The word does not appear in the text.***')
         else:
-            n = min(int(user_choice), len(sorted_word_counts))
-            for i in range(n):
-                print(sorted_word_counts[i])
+            for item in islice(sorted_word_counts, int(user_choice)):
+                print(item)
 
 if __name__ == '__main__':
     main()
