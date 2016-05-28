@@ -17,13 +17,13 @@ class WordCounter:
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized: GeneratorType, length: int):
+    def _char_counter(genexp_text_sanitized: GeneratorType, n: int):
         """
         Iterate through genexp provided by one of the read_in methods,
         counting all words passed and cross-checking results against the
         UNIX words file/dictionary and adding those that are to the
-        output list until the list length meets passed length param or
-        all English words if length=None. The list of valid English
+        output list until the list length meets passed n param or
+        all English words if n=None. The list of valid English
         words is sorted in descending order before being returned.
         """
 
@@ -48,8 +48,8 @@ class WordCounter:
             word for word in count_words_master.most_common()
             if word[0] in dict_words_english)
 
-        if length:
-            while len(list_words_master) < length:
+        if n:
+            while len(list_words_master) < n:
                 try:
                     list_words_master.append(next(genexp_words_common_most))
                 except StopIteration:
@@ -94,9 +94,9 @@ class WordCounter:
         for line_sanitized in text_sanitized:
             yield line_sanitized
 
-    def read_in_file(self, filepath: str, length: int = 10):
+    def read_in_file(self, filepath: str, n: int = 10):
         """
-        Return sorted list of the #length# most common words and their
+        Return sorted list of the #n# most common words and their
         counts in a tuple.
         """
 
@@ -120,11 +120,11 @@ class WordCounter:
                 chunked_text = [working_text]
 
         assert isinstance(chunked_text, list)
-        return self._char_counter(self._sanitize(chunked_text), length)
+        return self._char_counter(self._sanitize(chunked_text), n)
 
-    def read_in_string(self, string: str, length: int=10):
+    def read_in_string(self, string: str, n: int=10):
         """
-        Return a sorted list of the #length# most common words and their
+        Return a sorted list of the #n# most common words and their
         counts in a tuple.
         """
 
@@ -138,7 +138,7 @@ class WordCounter:
             chunked_text = list(string)
 
         assert isinstance(chunked_text, list)
-        return self._char_counter(self._sanitize(chunked_text), length)
+        return self._char_counter(self._sanitize(chunked_text), n)
 
 
 class LetterCounter(WordCounter):
@@ -149,7 +149,7 @@ class LetterCounter(WordCounter):
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized: GeneratorType, length: int):
+    def _char_counter(genexp_text_sanitized: GeneratorType, n: int):
         """
         Overridden method from parent class, WordCounter,
         which counts letters instead of words.
@@ -171,8 +171,8 @@ class LetterCounter(WordCounter):
             for ltr in master_ltr_count.most_common()
             if english_ltrs.match(ltr[0]))
 
-        if length:
-            while len(master_ltr_list) < length:
+        if n:
+            while len(master_ltr_list) < n:
                 try:
                     master_ltr_list.append(next(common_ltrs_gen))
                 except StopIteration:

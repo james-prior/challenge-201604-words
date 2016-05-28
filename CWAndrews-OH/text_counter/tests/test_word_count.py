@@ -42,7 +42,7 @@ class TestWordCounter:
 
     def test_char_counter_io(self):
         not_str_gens = tuple(), list(), dict(), set(), int(), str(), bytes(), float(), complex()
-        counted_list = WordCounter._char_counter(generator_words_good(), length=5)
+        counted_list = WordCounter._char_counter(generator_words_good(), n=5)
         counts_only = [obj[1] for obj in counted_list]
 
         assert WordCounter._char_counter(generator_words_dirty(), 5)
@@ -59,16 +59,16 @@ class TestWordCounter:
 
         for not_gen in not_str_gens:
             with pytest.raises(AssertionError):
-                WordCounter._char_counter(not_gen, length=5)
+                WordCounter._char_counter(not_gen, n=5)
 
-        assert WordCounter._char_counter(generator_words_good(), length=5)
+        assert WordCounter._char_counter(generator_words_good(), n=5)
 
     def test_char_counter_returns_only_english_words(self):
         english_words = './static/english_words.txt'
         with open(english_words, 'rt') as eng_dict:
             english_dict = list(set([eng_word.lower().rstrip('\n') for eng_word in eng_dict.readlines()]))
 
-        clean_counted_list = WordCounter._char_counter(generator_words_dirty(), length=3)
+        clean_counted_list = WordCounter._char_counter(generator_words_dirty(), n=3)
         words_only = [word[0] for word in clean_counted_list]
 
         for not_word in ('dfadfskj', '?!%G1'):
@@ -80,15 +80,15 @@ class TestWordCounter:
     def test_length_matches_returned_word_count(self):
 
         for n_words in (15, 35):
-            assert len(WordCounter().read_in_file(filepath=TEXT_FRANKEN, length=n_words)) == n_words
+            assert len(WordCounter().read_in_file(filepath=TEXT_FRANKEN, n=n_words)) == n_words
 
     def test_return_all_if_length_gt_words_in_text(self):
 
-        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, length=500)
+        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=500)
 
     def test_length_none_returns_all_words(self):
 
-        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, length=None)
+        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=None)
 
     def test_sanitizer_io(self):
         from types import GeneratorType
@@ -119,13 +119,13 @@ class TestWordCounter:
         for test_text in (TEXT_LINE_MULTI, TEXT_LINE_ONE):
             assert isinstance(WordCounter().read_in_file(filepath=test_text), list)
 
-        for count_tuple in WordCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED, length=None):
+        for count_tuple in WordCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED, n=None):
             assert not gutenberg_re.findall(count_tuple[0])
 
     def test_read_in_file_any_gutenbook(self):
 
         for test_text in (TEXT_FRANKEN, TEXT_MOON):
-            assert WordCounter().read_in_file(test_text, length=5)
+            assert WordCounter().read_in_file(test_text, n=5)
 
     def test_read_in_string_io(self):
 
@@ -143,9 +143,9 @@ class TestLetterCounter:
 
         for test_string in (strings_list(), STR_LINE_MULTI):
             with pytest.raises(AssertionError):
-                LetterCounter()._char_counter(genexp_text_sanitized=test_string, length=5)
+                LetterCounter()._char_counter(genexp_text_sanitized=test_string, n=5)
 
-        assert isinstance(LetterCounter()._char_counter(genexp_text_sanitized=generator_words_good(), length=5), list)
+        assert isinstance(LetterCounter()._char_counter(genexp_text_sanitized=generator_words_good(), n=5), list)
 
     def test_letter_counter_io(self):
 
@@ -158,19 +158,19 @@ class TestLetterCounter:
     def test_read_in_file_any_gutenbook(self):
 
         for test_text in (TEXT_FRANKEN, TEXT_MOON):
-            assert LetterCounter().read_in_file(test_text, length=5)
+            assert LetterCounter().read_in_file(test_text, n=5)
 
     def test_diff_n_letters(self):
         n_letters_tup = 1, 26
 
         for n_letters in n_letters_tup:
-            letter_count = LetterCounter().read_in_file(filepath=TEXT_FRANKEN, length=n_letters)
+            letter_count = LetterCounter().read_in_file(filepath=TEXT_FRANKEN, n=n_letters)
             assert len(letter_count) == n_letters
 
     def test_all_letters(self):
 
-        assert LetterCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED, length=None)
+        assert LetterCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED, n=None)
 
     def test_counts_letters_only(self):
 
-        assert len(LetterCounter().read_in_file(filepath=TEXT_FRANKEN, length=27)) == 26
+        assert len(LetterCounter().read_in_file(filepath=TEXT_FRANKEN, n=27)) == 26
