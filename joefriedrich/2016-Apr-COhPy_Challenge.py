@@ -35,9 +35,9 @@ def get_book_from_gutenberg_website(book_number):
         'http://www.gutenberg.org/cache/epub/' + book_number +
         '/pg' + book_number + '.txt')
 
-def creating_a_dictionary(from_words_list):
+def creating_a_dictionary(words):
     word_counts = defaultdict(int)
-    for word in from_words_list:
+    for word in words:
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS:
             word_counts[word] += 1
     return word_counts
