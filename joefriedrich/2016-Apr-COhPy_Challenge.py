@@ -72,7 +72,7 @@ def main():
         if user_choice.lower() == 'q':
             break
 
-        print('')
+        print()
         if word_pattern.search(user_choice):
             word = user_choice
             print(word, '=>', word_counts[word])
