@@ -15,8 +15,6 @@
 import requests
 import re
 
-#************************FUNCTIONS*****************************
-
 def get_user_input():
 	return input('Type the number of the Gutenberg publication you wish to see:  ')
 
@@ -44,8 +42,6 @@ def organizing_data(from_dictionary):
 		organized_words.append(entry)
 	
 	return sorted(organized_words, key = lambda entry: entry[1], reverse = 1)
-
-#**************************START*******************************
 
 print('Welcome to the Friedrich Gutenberg word-counter thingy.')
 book_number = get_user_input()
