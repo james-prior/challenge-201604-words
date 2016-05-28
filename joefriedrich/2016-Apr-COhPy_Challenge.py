@@ -35,7 +35,7 @@ def get_book_from_gutenberg_website(book_number):
         'http://www.gutenberg.org/cache/epub/' + book_number +
         '/pg' + book_number + '.txt')
 
-def creating_a_dictionary(words):
+def count_words(words):
     word_counts = Counter(
         word for word in words
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
@@ -63,10 +63,10 @@ def main():
     words = find_words.findall(book)
 
     print('Creating dictionary...')
-    web_dictionary = creating_a_dictionary(words)
+    word_counts = count_words(words)
 
     print('Organizing data...')
-    count_words = organizing_data(web_dictionary)
+    sorted_word_counts = organizing_data(word_counts)
 
     while True:
         print('\nWhat would you like to see?')
@@ -81,16 +81,16 @@ def main():
         if user_choice == 'q':
             break
         elif word_test != None:
-            if user_choice in web_dictionary:
-                print(user_choice + ' => ' + str(web_dictionary[user_choice]))
+            if user_choice in word_counts:
+                print(user_choice + ' => ' + str(word_counts[user_choice]))
             else:
                 print('***The word does not appear in the text.***')
         else:
             user_choice = int(user_choice)
-            if user_choice >= len(count_words):
-                user_choice = len(count_words)
+            if user_choice >= len(sorted_word_counts):
+                user_choice = len(sorted_word_counts)
             for user_number in range(0, int(user_choice)):
-                print(count_words[user_number])
+                print(sorted_word_counts[user_number])
 
 if __name__ == '__main__':
     main()
