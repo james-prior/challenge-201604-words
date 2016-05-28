@@ -15,6 +15,8 @@
 import requests
 import re
 
+from collections import defaultdict
+
 VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
 
 def get_user_input():
@@ -34,11 +36,9 @@ def get_book_from_gutenberg_website(book_number):
         '/pg' + book_number + '.txt')
 
 def creating_a_dictionary(from_words_list):
-    word_counts = {}
+    word_counts = defaultdict(int)
     for word in from_words_list:
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS:
-            if word not in word_counts:
-                word_counts[word] = 0
             word_counts[word] += 1
     return word_counts
 
