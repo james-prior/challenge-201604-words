@@ -64,7 +64,8 @@ def main():
     word_counts = count_words(words)
 
     while True:
-        print('\nWhat would you like to see?')
+        print()
+        print('What would you like to see?')
         print('-Type a word to see how many times it appears.')
         print('-Type a number to see that number of top words.')
         print('-Type a super huge number to get all words.')
