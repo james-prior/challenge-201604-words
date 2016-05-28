@@ -16,7 +16,6 @@ import requests
 import re
 
 from collections import Counter
-from itertools import islice
 
 VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
 
@@ -42,10 +41,6 @@ def count_words(words):
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
     )
 
-def sort_words_by_count(word_counts):
-    return sorted(
-        word_counts.items(), key = lambda entry: entry[1], reverse = 1)
-
 def main():
     print('Welcome to the Friedrich Gutenberg word-counter thingy.')
     book_number = get_user_input()
@@ -61,9 +56,6 @@ def main():
 
     print('Creating dictionary...')
     word_counts = count_words(words)
-
-    print('Organizing data...')
-    sorted_word_counts = sort_words_by_count(word_counts)
 
     while True:
         print('\nWhat would you like to see?')
@@ -83,7 +75,7 @@ def main():
             else:
                 print('***The word does not appear in the text.***')
         else:
-            for item in islice(sorted_word_counts, int(user_choice)):
+            for item in word_counts.most_common(int(user_choice)):
                 print(item)
 
 if __name__ == '__main__':
