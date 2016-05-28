@@ -36,11 +36,10 @@ def get_book_from_gutenberg_website(book_number):
         '/pg' + book_number + '.txt')
 
 def count_words(words):
-    word_counts = Counter(
+    return Counter(
         word for word in words
         if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
     )
-    return word_counts
 
 def organizing_data(from_dictionary):
     organized_words = []
