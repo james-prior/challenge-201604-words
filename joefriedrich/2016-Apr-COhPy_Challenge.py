@@ -42,10 +42,10 @@ def main():
     book_number = input(
         'Type the number of the Gutenberg publication you wish to see:  ')
 
-    print('\nGrabbing website data...')
-    website = get_book_from_gutenberg_website(book_number)
+    print('\nGrabbing book from website.')
+    web_page = get_book_from_gutenberg_website(book_number)
 
-    find_book = re.split(r'\*{3}[\s\w]*\*{3}', website.text)
+    find_book = re.split(r'\*{3}[\s\w]*\*{3}', web_page.text)
     book = find_book[1]
 
     find_words = re.compile(r'[a-zA-Z]+')
