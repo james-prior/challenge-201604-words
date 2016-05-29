@@ -65,9 +65,9 @@ class TestWordCounter:
     def test_char_counter_returns_only_english_words(self):
         english_words = './static/english_words.txt'
         with open(english_words, 'rt') as eng_dict:
-            english_dict = list(set([
+            english_dict = set([
                 eng_word.lower().rstrip('\n')
-                for eng_word in eng_dict.readlines()]))
+                for eng_word in eng_dict.readlines()])
 
         clean_counted_list = WordCounter._char_counter(
             generator_words_dirty(), n=3)
