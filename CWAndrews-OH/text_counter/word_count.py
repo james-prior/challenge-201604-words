@@ -21,14 +21,16 @@ class WordCounter:
             lines,
             n,
             dictionary_filename='static/english_words.txt'):
-        """
-        Iterate through genexp provided by one of the read_in methods,
-        counting all words passed and cross-checking results against the
-        UNIX words file/dictionary and adding those that are to the
-        output list until the list length meets passed n param or
-        all English words if n=None. The list of valid English
-        words is sorted in descending order before being returned.
-        """
+        '''
+        Return a list of the n most common words and their counts from
+        the most common to the least. If n is None, returns all words.
+        Words with equal counts are ordered arbitrarily.
+
+        Words are from lines that are in dictionary in specified file.
+
+        lines is an iterable of strings.
+        If n is None, all words will be returned.
+        '''
 
         # 230k+ words from the standard UNIX dict in a local text file
         # ('/usr/share/dict/words')
