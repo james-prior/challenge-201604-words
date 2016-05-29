@@ -19,7 +19,7 @@ class WordCounter:
     @staticmethod
     def _word_counter(
             lines,
-            n,
+            n=None,
             dictionary_filename='static/english_words.txt'):
         '''
         Return a list of the n most common words and their counts from
