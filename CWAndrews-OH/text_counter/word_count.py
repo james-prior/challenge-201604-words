@@ -18,7 +18,7 @@ class WordCounter:
 
     @staticmethod
     def _char_counter(
-            genexp_text_sanitized,
+            lines,
             n,
             dictionary_filename='static/english_words.txt'):
         """
@@ -37,20 +37,10 @@ class WordCounter:
         with open(dictionary_filename) as f:
             dictionary = set([word.lower() for word in f.read().split()])
 
-        count_words_master = Counter()
+        words = (' '.join(lines)).split()
+        word_counts = Counter(word for word in words if word in dictionary)
 
-        for line_working in genexp_text_sanitized:
-            count_words_master.update(Counter(line_working.split()))
-
-        genexp_words_common_most = (
-            word for word in count_words_master.most_common()
-            if word[0] in dictionary)
-
-        list_words_master = list(islice(genexp_words_common_most, n))
-
-        list_words_master.sort(
-            key=lambda counter_obj: counter_obj[1], reverse=True)
-        return list_words_master
+        return word_counts.most_common(n)
 
     @staticmethod
     def _sanitize(list_strings):
