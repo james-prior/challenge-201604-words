@@ -2,6 +2,7 @@
 # __author__ = cwandrews
 
 import re
+from string import ascii_lowercase
 from collections import Counter, OrderedDict
 from os.path import exists, isfile
 from itertools import islice
@@ -22,53 +23,37 @@ class WordCounter:
     """
 
     @staticmethod
-    def _word_counter(lines, n=None, dictionary_filename=None):
+    def _word_counter(text, n=None, dictionary_filename=None):
         '''
         Return a list of the n most common words and their counts from
         the most common to the least. If n is None, returns all words.
         Words with equal counts are ordered arbitrarily.
 
-        Words are from lines that are in dictionary in specified file.
+        Words are from text that are in dictionary in specified file.
 
-        lines is an iterable of strings.
         If n is None, all words will be returned.
         '''
 
         with open(dictionary_filename) as f:
             dictionary = set([word.lower() for word in f.read().split()])
 
-        words = (' '.join(lines)).split()
+        words = text.lower().split()
         word_counts = Counter(word for word in words if word in dictionary)
 
         return word_counts.most_common(n)
 
     @staticmethod
-    def _sanitize(list_strings):
+    def _sanitize(text):
         """
         Performs additional processing (sanitization) of text.
-        Will strip white space from start and end of string, remove
-        special characters, downcase all letters, replace any white
-        space w/single space. Private method utilized by class methods.
+
+        Particularly, removes special characters.
         """
 
-        white_space_re = re.compile("\s+")
-        special_chars_re = re.compile("[-\"\'|:;.?!,\(\)\d]+")
+        special_characters_pattern = re.compile("[-\"\'|:;.?!,\(\)\d]+")
 
-        text_trimmed = (
-            line_working.strip()
-            for line_working in list_strings if line_working)
-        text_no_extra_ws = (
-            white_space_re.sub(' ', line_working)
-            for line_working in text_trimmed)
-        text_no_spec_chars = (
-            special_chars_re.sub('', line_working)
-            for line_working in text_no_extra_ws)
-        text_sanitized = (
-            line_working.lower()
-            for line_working in text_no_spec_chars)
+        return special_characters_pattern.sub('', text)
 
-        for line_sanitized in text_sanitized:
-            yield line_sanitized
 
     def read_in_file(self, filepath, n=10):
         """
@@ -76,43 +61,28 @@ class WordCounter:
         counts in a tuple.
         """
 
-        assert exists(filepath) and isfile(filepath)
+        gutenberg_boilerplate_pattern = re.compile("\n{10}")
 
-        with open(filepath, 'rt') as infile:
+        with open(filepath) as f:
+            raw_text = f.read()
 
-            gberg_split_re = re.compile("\n{10}")
-            neline_working_re = re.compile("[\n\r]")
-
-            read_text = infile.read()
-
-            if ("GUTENBERG" in read_text) and gberg_split_re.search(read_text):
-                working_text = gberg_split_re.split(read_text)[1]
-            else:
-                working_text = read_text
-
-            if neline_working_re.search(working_text):
-                chunked_text = neline_working_re.split(working_text)
-            else:
-                chunked_text = [working_text]
+        if ("GUTENBERG" in raw_text and
+                gutenberg_boilerplate_pattern.search(raw_text)):
+            text_body = gutenberg_boilerplate_pattern.split(raw_text)[1]
+        else:
+            text_body = raw_text
 
         return self._word_counter(
-            self._sanitize(chunked_text), n, ENGLISH_DICTIONARY_FILENAME)
+            self._sanitize(text_body), n, ENGLISH_DICTIONARY_FILENAME)
 
-    def read_in_string(self, string: str, n: int=10):
+    def read_in_string(self, text, n=10):
         """
         Return a sorted list of the #n# most common words and their
         counts in a tuple.
         """
 
-        newline_working_re = re.compile("[\n\r]")
-
-        if newline_working_re.search(string):
-            chunked_text = newline_working_re.split(string)
-        else:
-            chunked_text = list(string)
-
         return self._word_counter(
-            self._sanitize(chunked_text), n, ENGLISH_DICTIONARY_FILENAME)
+            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
 
 
 class LetterCounter(WordCounter):
@@ -123,39 +93,18 @@ class LetterCounter(WordCounter):
     """
 
     @staticmethod
-    def _word_counter(genexp_text_sanitized, n: int, dictionary_filename):
+    def _word_counter(text, n=None, dictionary_filename=None):
         """
         Overridden method from parent class, WordCounter,
         which counts letters instead of words.
         """
 
-        english_ltrs = re.compile("[a-z]")
+        dictionary = set(ascii_lowercase)
 
-        master_ltr_count = Counter()
+        words = list(text.lower())
+        word_counts = Counter(word for word in words if word in dictionary)
 
-        for line_working in genexp_text_sanitized:
-            ns_line_working = list(''.join(line_working))
-            master_ltr_count.update(Counter(ns_line_working))
-
-        master_ltr_list = list()
-        common_ltrs_gen = (
-            ltr
-            for ltr in master_ltr_count.most_common()
-            if english_ltrs.match(ltr[0]))
-
-        if n:
-            while len(master_ltr_list) < n:
-                try:
-                    master_ltr_list.append(next(common_ltrs_gen))
-                except StopIteration:
-                    break
-        else:
-            for ltr in common_ltrs_gen:
-                master_ltr_list.append(ltr)
-
-        master_ltr_list.sort(
-            key=lambda counter_obj: counter_obj[1], reverse=True)
-        return master_ltr_list
+        return word_counts.most_common(n)
 
 
 def frequency_plot(word_counter_obj):

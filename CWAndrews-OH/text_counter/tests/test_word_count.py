@@ -10,11 +10,11 @@ from text_counter.word_count import WordCounter
 
 ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
 
-STR_LINE_MULTI = (
+MULTI_LINE_STRING = (
     'This is?\r my |file.\n'
     'It is alright\t 123 I suppose...\n'
     'This is !really! test.\nI hope it, works')
-STR_LINE_ONE = (
+ONE_LINE_STRING = (
     'This is just another string but longer and with no newlines '
     'to test the read_in_string method. is is.')
 
@@ -27,20 +27,18 @@ TEXT_LINE_ONE = 'static/one_line_test.txt'
 
 @pytest.fixture("class")
 def generator_words_good():
-    return (word for word in re.split(
-        '\s+', 'This is just for a test.. to see how well...'))
+    return 'This is just for a test.. to see how well...'
 
 
 @pytest.fixture("class")
 def generator_words_dirty():
-    return (word for word in re.split(
-        '\s+',
-        'This is just| test.. dfadfskj see 123 ?!%G1 is ?!%G1 will dfadfskj'))
+    return (
+        'This is just| test.. dfadfskj see 123 ?!%G1 is ?!%G1 will dfadfskj')
 
 
 @pytest.fixture("class")
 def strings_list():
-    return STR_LINE_MULTI.split('\n')
+    return MULTI_LINE_STRING
 
 
 @pytest.mark.usefixtures(
@@ -104,14 +102,14 @@ class TestWordCounter:
         assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=None)
 
     def test_sanitizer_io(self):
-        for iterable_obj in (strings_list(), tuple(strings_list())):
-            assert next(WordCounter()._sanitize(list_strings=iterable_obj))
+        for text in (strings_list(), ):
+            assert WordCounter()._sanitize(text)
 
     def test_sanitizer_sanitizes(self):
-        spec_chars_re = re.compile("[\d\t\r?|!]")
+        spec_chars_re = re.compile("[\d?|!]")
 
-        for string in WordCounter._sanitize(list_strings=strings_list()):
-            assert not spec_chars_re.findall(string)
+        for text in (WordCounter._sanitize(strings_list()),):
+            assert not spec_chars_re.findall(text)
 
     def test_read_in_file_io(self):
         gutenberg_re = re.compile("(ebook|electronic|computer)")
@@ -129,29 +127,24 @@ class TestWordCounter:
             assert WordCounter().read_in_file(test_text, n=5)
 
     def test_read_in_string_io(self):
-        for test_string in (STR_LINE_MULTI, STR_LINE_ONE):
-            assert isinstance(
-                (WordCounter().read_in_string(string=test_string)), list)
+        for text in (MULTI_LINE_STRING, ONE_LINE_STRING):
+            assert isinstance((WordCounter().read_in_string(text)), list)
 
 
 class TestLetterCounter:
 
     def test_char_counter_io(self):
         assert isinstance(
-            LetterCounter()._word_counter(
-                genexp_text_sanitized=generator_words_good(),
-                n=5,
-                dictionary_filename=ENGLISH_DICTIONARY_FILENAME
-            ), list)
+            LetterCounter()._word_counter(generator_words_good(), n=5), list)
 
     def test_letter_counter_io(self):
         assert LetterCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED)
         assert isinstance(LetterCounter().read_in_file(
             filepath=TEXT_FRANKEN_ABRIDGED), list)
 
-        assert LetterCounter().read_in_string(string=STR_LINE_MULTI)
-        assert isinstance(LetterCounter().read_in_string(
-            string=STR_LINE_MULTI), list)
+        assert LetterCounter().read_in_string(MULTI_LINE_STRING)
+        assert isinstance(
+            LetterCounter().read_in_string(MULTI_LINE_STRING), list)
 
     def test_read_in_file_any_gutenbook(self):
         for test_text in (TEXT_FRANKEN, TEXT_MOON):
