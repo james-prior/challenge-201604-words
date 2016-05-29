@@ -17,7 +17,7 @@ class WordCounter:
     """
 
     @staticmethod
-    def _char_counter(
+    def _word_counter(
             lines,
             n,
             dictionary_filename='static/english_words.txt'):
@@ -97,7 +97,7 @@ class WordCounter:
             else:
                 chunked_text = [working_text]
 
-        return self._char_counter(self._sanitize(chunked_text), n)
+        return self._word_counter(self._sanitize(chunked_text), n)
 
     def read_in_string(self, string: str, n: int=10):
         """
@@ -112,18 +112,18 @@ class WordCounter:
         else:
             chunked_text = list(string)
 
-        return self._char_counter(self._sanitize(chunked_text), n)
+        return self._word_counter(self._sanitize(chunked_text), n)
 
 
 class LetterCounter(WordCounter):
     """
     Letter counter object which counts letters instead of words like
-    it's parent class wherein the only difference is the _char_counter
+    it's parent class wherein the only difference is the _word_counter
     method which has been overidden.
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized, n: int):
+    def _word_counter(genexp_text_sanitized, n: int):
         """
         Overridden method from parent class, WordCounter,
         which counts letters instead of words.

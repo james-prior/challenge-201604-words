@@ -45,10 +45,10 @@ def strings_list():
     "generator_words_good", "generator_words_dirty", "strings_list")
 class TestWordCounter:
     def test_char_counter_io(self):
-        counted_list = WordCounter._char_counter(generator_words_good(), n=5)
+        counted_list = WordCounter._word_counter(generator_words_good(), n=5)
         counts_only = [obj[1] for obj in counted_list]
 
-        assert WordCounter._char_counter(generator_words_dirty(), 5)
+        assert WordCounter._word_counter(generator_words_dirty(), 5)
 
         assert isinstance(counted_list, list)
 
@@ -60,7 +60,7 @@ class TestWordCounter:
         for i in range(len(counts_only) - 1):
             assert counts_only[i] >= counts_only[i + 1]
 
-        assert WordCounter._char_counter(generator_words_good(), n=5)
+        assert WordCounter._word_counter(generator_words_good(), n=5)
 
     def test_char_counter_returns_only_english_words(self):
         english_words = './static/english_words.txt'
@@ -69,7 +69,7 @@ class TestWordCounter:
                 eng_word.lower().rstrip('\n')
                 for eng_word in eng_dict.readlines()])
 
-        clean_counted_list = WordCounter._char_counter(
+        clean_counted_list = WordCounter._word_counter(
             generator_words_dirty(), n=3)
         words_only = [word[0] for word in clean_counted_list]
 
@@ -127,7 +127,7 @@ class TestLetterCounter:
 
     def test_char_counter_io(self):
         assert isinstance(
-            LetterCounter()._char_counter(
+            LetterCounter()._word_counter(
                 genexp_text_sanitized=generator_words_good(), n=5
             ), list)
 
