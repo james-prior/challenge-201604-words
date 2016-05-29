@@ -16,7 +16,10 @@ class WordCounter:
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized, n):
+    def _char_counter(
+            genexp_text_sanitized,
+            n,
+            dictionary_filename='static/english_words.txt'):
         """
         Iterate through genexp provided by one of the read_in methods,
         counting all words passed and cross-checking results against the
@@ -28,12 +31,10 @@ class WordCounter:
 
         # 230k+ words from the standard UNIX dict in a local text file
         # ('/usr/share/dict/words')
-        file_words_eng = 'static/english_words.txt'
+        # dictionary_filename = 'static/english_words.txt'
 
-        with open(file_words_eng, 'rt') as file_words_eng:
-            dict_words_english = set([
-                eng_word.lower().rstrip('\n')
-                for eng_word in file_words_eng.readlines()])
+        with open(dictionary_filename) as f:
+            dictionary = set([word.lower() for word in f.read().split()])
 
         count_words_master = Counter()
 
@@ -43,7 +44,7 @@ class WordCounter:
         list_words_master = list()
         genexp_words_common_most = (
             word for word in count_words_master.most_common()
-            if word[0] in dict_words_english)
+            if word[0] in dictionary)
 
         if n:
             while len(list_words_master) < n:
