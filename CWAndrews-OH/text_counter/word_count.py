@@ -4,7 +4,6 @@
 import re
 from collections import Counter, OrderedDict
 from os.path import exists, isfile
-from types import GeneratorType
 
 import matplotlib.pyplot as plt
 
@@ -17,7 +16,7 @@ class WordCounter:
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized: GeneratorType, n: int):
+    def _char_counter(genexp_text_sanitized, n):
         """
         Iterate through genexp provided by one of the read_in methods,
         counting all words passed and cross-checking results against the
@@ -30,8 +29,6 @@ class WordCounter:
         # 230k+ words from the standard UNIX dict in a local text file
         # ('/usr/share/dict/words')
         file_words_eng = 'static/english_words.txt'
-
-        assert isinstance(genexp_text_sanitized, GeneratorType)
 
         with open(file_words_eng, 'rt') as file_words_eng:
             dict_words_english = set([
@@ -58,21 +55,18 @@ class WordCounter:
             for word in genexp_words_common_most:
                 list_words_master.append(word)
 
-        assert isinstance(list_words_master, list)
         list_words_master.sort(
             key=lambda counter_obj: counter_obj[1], reverse=True)
         return list_words_master
 
     @staticmethod
-    def _sanitize(list_strings: (list, tuple)):
+    def _sanitize(list_strings):
         """
         Performs additional processing (sanitization) of text.
         Will strip white space from start and end of string, remove
         special characters, downcase all letters, replace any white
         space w/single space. Private method utilized by class methods.
         """
-
-        assert isinstance(list_strings, (list, tuple))
 
         white_space_re = re.compile("\s+")
         special_chars_re = re.compile("[-\"\'|:;.?!,\(\)\d]+")
@@ -90,11 +84,10 @@ class WordCounter:
             line_working.lower()
             for line_working in text_no_spec_chars)
 
-        assert isinstance(text_sanitized, GeneratorType)
         for line_sanitized in text_sanitized:
             yield line_sanitized
 
-    def read_in_file(self, filepath: str, n: int = 10):
+    def read_in_file(self, filepath, n=10):
         """
         Return sorted list of the #n# most common words and their
         counts in a tuple.
@@ -119,7 +112,6 @@ class WordCounter:
             else:
                 chunked_text = [working_text]
 
-        assert isinstance(chunked_text, list)
         return self._char_counter(self._sanitize(chunked_text), n)
 
     def read_in_string(self, string: str, n: int=10):
@@ -128,8 +120,6 @@ class WordCounter:
         counts in a tuple.
         """
 
-        assert isinstance(string, str)
-
         newline_working_re = re.compile("[\n\r]")
 
         if newline_working_re.search(string):
@@ -137,7 +127,6 @@ class WordCounter:
         else:
             chunked_text = list(string)
 
-        assert isinstance(chunked_text, list)
         return self._char_counter(self._sanitize(chunked_text), n)
 
 
@@ -149,13 +138,11 @@ class LetterCounter(WordCounter):
     """
 
     @staticmethod
-    def _char_counter(genexp_text_sanitized: GeneratorType, n: int):
+    def _char_counter(genexp_text_sanitized, n: int):
         """
         Overridden method from parent class, WordCounter,
         which counts letters instead of words.
         """
-
-        assert isinstance(genexp_text_sanitized, GeneratorType)
 
         english_ltrs = re.compile("[a-z]")
 
@@ -183,7 +170,6 @@ class LetterCounter(WordCounter):
 
         master_ltr_list.sort(
             key=lambda counter_obj: counter_obj[1], reverse=True)
-        assert isinstance(master_ltr_list, list)
         return master_ltr_list
 
 

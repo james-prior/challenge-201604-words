@@ -41,7 +41,6 @@ def strings_list():
 class TestWordCounter:
 
     def test_char_counter_io(self):
-        not_str_gens = tuple(), list(), dict(), set(), int(), str(), bytes(), float(), complex()
         counted_list = WordCounter._char_counter(generator_words_good(), n=5)
         counts_only = [obj[1] for obj in counted_list]
 
@@ -56,10 +55,6 @@ class TestWordCounter:
 
         for i in range(len(counts_only) - 1):
             assert counts_only[i] >= counts_only[i + 1]
-
-        for not_gen in not_str_gens:
-            with pytest.raises(AssertionError):
-                WordCounter._char_counter(not_gen, n=5)
 
         assert WordCounter._char_counter(generator_words_good(), n=5)
 
@@ -91,15 +86,8 @@ class TestWordCounter:
         assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=None)
 
     def test_sanitizer_io(self):
-        from types import GeneratorType
-
         for iterable_obj in (strings_list(), tuple(strings_list())):
             assert next(WordCounter()._sanitize(list_strings=iterable_obj))
-            assert isinstance(WordCounter()._sanitize(list_strings=iterable_obj), GeneratorType)
-
-        for test_type in (1, 'just a string'):
-            with pytest.raises(AssertionError):
-                next(WordCounter()._sanitize(list_strings=test_type))
 
     def test_sanitizer_sanitizes(self):
 
@@ -111,10 +99,6 @@ class TestWordCounter:
     def test_read_in_file_io(self):
 
         gutenberg_re = re.compile("(ebook|electronic|computer)")
-
-        for test_path in ('/Users/NONE/', '/Users/cwandrews'):
-            with pytest.raises(AssertionError):
-                WordCounter().read_in_file(filepath=test_path)
 
         for test_text in (TEXT_LINE_MULTI, TEXT_LINE_ONE):
             assert isinstance(WordCounter().read_in_file(filepath=test_text), list)
@@ -129,10 +113,6 @@ class TestWordCounter:
 
     def test_read_in_string_io(self):
 
-        for test_string in (1, strings_list()):
-            with pytest.raises(AssertionError):
-                WordCounter().read_in_string(string=test_string)
-
         for test_string in (STR_LINE_MULTI, STR_LINE_ONE):
             assert isinstance((WordCounter().read_in_string(string=test_string)), list)
 
@@ -140,10 +120,6 @@ class TestWordCounter:
 class TestLetterCounter:
 
     def test_char_counter_io(self):
-
-        for test_string in (strings_list(), STR_LINE_MULTI):
-            with pytest.raises(AssertionError):
-                LetterCounter()._char_counter(genexp_text_sanitized=test_string, n=5)
 
         assert isinstance(LetterCounter()._char_counter(genexp_text_sanitized=generator_words_good(), n=5), list)
 
