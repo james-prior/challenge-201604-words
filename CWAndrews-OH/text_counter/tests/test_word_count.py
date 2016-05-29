@@ -8,6 +8,8 @@ from text_counter.word_count import LetterCounter
 from text_counter.word_count import WordCounter
 
 
+ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
+
 STR_LINE_MULTI = (
     'This is?\r my |file.\n'
     'It is alright\t 123 I suppose...\n'
@@ -45,10 +47,14 @@ def strings_list():
     "generator_words_good", "generator_words_dirty", "strings_list")
 class TestWordCounter:
     def test_char_counter_io(self):
-        counted_list = WordCounter._word_counter(generator_words_good(), n=5)
+        counted_list = WordCounter._word_counter(
+            generator_words_good(),
+            n=5,
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
         counts_only = [obj[1] for obj in counted_list]
 
-        assert WordCounter._word_counter(generator_words_dirty(), 5)
+        assert WordCounter._word_counter(
+            generator_words_dirty(), 5, ENGLISH_DICTIONARY_FILENAME)
 
         assert isinstance(counted_list, list)
 
@@ -60,7 +66,10 @@ class TestWordCounter:
         for i in range(len(counts_only) - 1):
             assert counts_only[i] >= counts_only[i + 1]
 
-        assert WordCounter._word_counter(generator_words_good(), n=5)
+        assert WordCounter._word_counter(
+            generator_words_good(),
+            n=5,
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
 
     def test_char_counter_returns_only_english_words(self):
         english_words = './static/english_words.txt'
@@ -70,7 +79,9 @@ class TestWordCounter:
                 for eng_word in eng_dict.readlines()])
 
         clean_counted_list = WordCounter._word_counter(
-            generator_words_dirty(), n=3)
+            generator_words_dirty(),
+            n=3,
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
         words_only = [word[0] for word in clean_counted_list]
 
         for not_word in ('dfadfskj', '?!%G1'):
@@ -128,7 +139,9 @@ class TestLetterCounter:
     def test_char_counter_io(self):
         assert isinstance(
             LetterCounter()._word_counter(
-                genexp_text_sanitized=generator_words_good(), n=5
+                genexp_text_sanitized=generator_words_good(),
+                n=5,
+                dictionary_filename=ENGLISH_DICTIONARY_FILENAME
             ), list)
 
     def test_letter_counter_io(self):

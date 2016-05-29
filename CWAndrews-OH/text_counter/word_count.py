@@ -9,6 +9,11 @@ from itertools import islice
 import matplotlib.pyplot as plt
 
 
+# 230k+ words from the standard UNIX dict in a local text file
+# ('/usr/share/dict/words')
+ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
+
+
 class WordCounter:
     """
     Read text from string or text file, counts words, and returns sorted
@@ -17,10 +22,7 @@ class WordCounter:
     """
 
     @staticmethod
-    def _word_counter(
-            lines,
-            n=None,
-            dictionary_filename='static/english_words.txt'):
+    def _word_counter(lines, n=None, dictionary_filename=None):
         '''
         Return a list of the n most common words and their counts from
         the most common to the least. If n is None, returns all words.
@@ -31,10 +33,6 @@ class WordCounter:
         lines is an iterable of strings.
         If n is None, all words will be returned.
         '''
-
-        # 230k+ words from the standard UNIX dict in a local text file
-        # ('/usr/share/dict/words')
-        # dictionary_filename = 'static/english_words.txt'
 
         with open(dictionary_filename) as f:
             dictionary = set([word.lower() for word in f.read().split()])
@@ -97,7 +95,8 @@ class WordCounter:
             else:
                 chunked_text = [working_text]
 
-        return self._word_counter(self._sanitize(chunked_text), n)
+        return self._word_counter(
+            self._sanitize(chunked_text), n, ENGLISH_DICTIONARY_FILENAME)
 
     def read_in_string(self, string: str, n: int=10):
         """
@@ -112,7 +111,8 @@ class WordCounter:
         else:
             chunked_text = list(string)
 
-        return self._word_counter(self._sanitize(chunked_text), n)
+        return self._word_counter(
+            self._sanitize(chunked_text), n, ENGLISH_DICTIONARY_FILENAME)
 
 
 class LetterCounter(WordCounter):
@@ -123,7 +123,7 @@ class LetterCounter(WordCounter):
     """
 
     @staticmethod
-    def _word_counter(genexp_text_sanitized, n: int):
+    def _word_counter(genexp_text_sanitized, n: int, dictionary_filename):
         """
         Overridden method from parent class, WordCounter,
         which counts letters instead of words.
