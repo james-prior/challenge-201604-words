@@ -60,6 +60,15 @@ class WordCounter:
 
         return special_characters_pattern.sub('', text)
 
+    def read_in_string(self, text, n=10):
+        """
+        Return a sorted list of the #n# most common words and their
+        counts in a tuple.
+        """
+
+        return self._word_counter(
+            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
+
     def read_in_file(self, filepath, n=10):
         """
         Return sorted list of the #n# most common words and their
@@ -69,17 +78,7 @@ class WordCounter:
         with open(filepath) as f:
             text = f.read()
 
-        return self._word_counter(
-            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
-
-    def read_in_string(self, text, n=10):
-        """
-        Return a sorted list of the #n# most common words and their
-        counts in a tuple.
-        """
-
-        return self._word_counter(
-            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
+        return self.read_in_string(text, n)
 
 
 class LetterCounter(WordCounter):
