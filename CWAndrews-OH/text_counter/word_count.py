@@ -108,17 +108,17 @@ class LetterCounter(WordCounter):
         return word_counts.most_common(n)
 
 
-def frequency_plot(word_counter_obj):
+def frequency_plot(word_counts):
     """
     Graph frequency of passed counter objects
     (WordCounter, LetterCounter).
     """
 
-    if len(word_counter_obj) > 30:
-        word_counter_obj = word_counter_obj[:30]
+    if len(word_counts) > 30:
+        word_counts = word_counts[:30]
 
     dict_counted = OrderedDict()
-    for wco in word_counter_obj:
+    for wco in word_counts:
         dict_counted[wco[0]] = wco[1]
 
     plt.rcdefaults()
