@@ -18,9 +18,9 @@ ONE_LINE_STRING = (
     'This is just another string but longer and with no newlines '
     'to test the read_in_string method. is is.')
 
-TEXT_FRANKEN = 'static/pg83.txt'
+TEXT_FRANKEN = 'static/pg84.txt'
 TEXT_FRANKEN_ABRIDGED = 'static/pg84_super_abridged.txt'
-TEXT_MOON = 'static/pg84.txt'
+TEXT_MOON = 'static/pg83.txt'
 TEXT_LINE_MULTI = 'static/test.txt'
 TEXT_LINE_ONE = 'static/one_line_test.txt'
 
