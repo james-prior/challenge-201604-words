@@ -17,7 +17,7 @@ ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
 
 class WordCounter:
     """
-    Read text from string or text file, counts words, and returns sorted
+    Read text from string or file, counts words, and returns sorted
     list of tuples with the n most common words and their respective
     counts.
     """
@@ -37,7 +37,6 @@ class WordCounter:
         with open(dictionary_filename) as f:
             dictionary = set(f.read().lower().split())
 
-
         words = text.lower().split()
         word_counts = Counter(word for word in words if word in dictionary)
 
@@ -54,7 +53,6 @@ class WordCounter:
         special_characters_pattern = re.compile("[-\"\'|:;.?!,\(\)\d]+")
 
         return special_characters_pattern.sub('', text)
-
 
     def read_in_file(self, filepath, n=10):
         """
@@ -88,9 +86,11 @@ class WordCounter:
 
 class LetterCounter(WordCounter):
     """
-    Letter counter object which counts letters instead of words like
-    it's parent class wherein the only difference is the _word_counter
-    method which has been overidden.
+    Read text from string or file, counts words, and returns sorted
+    list of tuples with the n most common words and their respective
+    counts.
+
+    Each letter of the text is defined as a word.
     """
 
     @staticmethod
