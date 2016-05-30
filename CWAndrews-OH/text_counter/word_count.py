@@ -42,13 +42,12 @@ class WordCounter:
         for line_working in genexp_text_sanitized:
             count_words_master.update(Counter(line_working.split()))
 
-        list_words_master = list()
         genexp_words_common_most = (
             word for word in count_words_master.most_common()
             if word[0] in dictionary)
 
-        for word in islice(genexp_words_common_most, n):
-            list_words_master.append(word)
+        list_words_master = [
+            word for word in islice(genexp_words_common_most, n)]
 
         list_words_master.sort(
             key=lambda counter_obj: counter_obj[1], reverse=True)
