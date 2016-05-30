@@ -49,9 +49,10 @@ class WordCounter:
         if n:
             while len(list_words_master) < n:
                 try:
-                    list_words_master.append(next(genexp_words_common_most))
+                    word = next(genexp_words_common_most)
                 except StopIteration:
                     break
+                list_words_master.append(word)
         else:
             for word in genexp_words_common_most:
                 list_words_master.append(word)
