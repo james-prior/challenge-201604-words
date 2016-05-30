@@ -47,12 +47,8 @@ class WordCounter:
             word for word in count_words_master.most_common()
             if word[0] in dictionary)
 
-        if n:
-            for word in islice(genexp_words_common_most, n):
-                list_words_master.append(word)
-        else:
-            for word in islice(genexp_words_common_most, n):
-                list_words_master.append(word)
+        for word in islice(genexp_words_common_most, n):
+            list_words_master.append(word)
 
         list_words_master.sort(
             key=lambda counter_obj: counter_obj[1], reverse=True)
