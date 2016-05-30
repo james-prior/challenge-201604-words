@@ -51,6 +51,11 @@ class WordCounter:
         Particularly, removes special characters.
         """
 
+        gutenberg_boilerplate_pattern = re.compile("\n{10}")
+        if ("GUTENBERG" in text and
+                gutenberg_boilerplate_pattern.search(text)):
+            text = gutenberg_boilerplate_pattern.split(text)[1]
+
         special_characters_pattern = re.compile("[-\"\'|:;.?!,\(\)\d]+")
 
         return special_characters_pattern.sub('', text)
@@ -61,19 +66,11 @@ class WordCounter:
         counts in a tuple.
         """
 
-        gutenberg_boilerplate_pattern = re.compile("\n{10}")
-
         with open(filepath) as f:
-            raw_text = f.read()
-
-        if ("GUTENBERG" in raw_text and
-                gutenberg_boilerplate_pattern.search(raw_text)):
-            text_body = gutenberg_boilerplate_pattern.split(raw_text)[1]
-        else:
-            text_body = raw_text
+            text = f.read()
 
         return self._word_counter(
-            self._sanitize(text_body), n, ENGLISH_DICTIONARY_FILENAME)
+            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
 
     def read_in_string(self, text, n=10):
         """
