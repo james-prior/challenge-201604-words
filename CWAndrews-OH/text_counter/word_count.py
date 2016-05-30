@@ -4,6 +4,7 @@
 import re
 from collections import Counter, OrderedDict
 from os.path import exists, isfile
+from itertools import islice
 
 import matplotlib.pyplot as plt
 
@@ -47,9 +48,7 @@ class WordCounter:
             if word[0] in dictionary)
 
         if n:
-            for word in genexp_words_common_most:
-                if len(list_words_master) >= n:
-                    break
+            for word in islice(genexp_words_common_most, n):
                 list_words_master.append(word)
         else:
             for word in genexp_words_common_most:
