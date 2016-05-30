@@ -111,8 +111,10 @@ class LetterCounter(WordCounter):
 
 def frequency_plot(word_counts):
     """
-    Graph frequency of passed counter objects
-    (WordCounter, LetterCounter).
+    Graph frequency of words versus their counts
+    passed as collection of (word, count) tuples
+    (such as those returned by
+    WordCounter.most_common() or LetterCounter.most_common()).
     """
 
     dict_counted = OrderedDict(word_counts[:N_MAX_WORDS_TO_PLOT])
