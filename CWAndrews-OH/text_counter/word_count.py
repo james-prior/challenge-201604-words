@@ -114,10 +114,7 @@ def frequency_plot(word_counts):
     (WordCounter, LetterCounter).
     """
 
-    if len(word_counts) > 30:
-        word_counts = word_counts[:30]
-
-    dict_counted = OrderedDict(word_counts)
+    dict_counted = OrderedDict(word_counts[:30])
 
     plt.rcdefaults()
     plt.barh(range(len(dict_counted)), dict_counted.values(), align='center')
