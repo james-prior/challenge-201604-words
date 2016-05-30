@@ -35,7 +35,8 @@ class WordCounter:
         '''
 
         with open(dictionary_filename) as f:
-            dictionary = set([word.lower() for word in f.read().split()])
+            dictionary = set(f.read().lower().split())
+
 
         words = text.lower().split()
         word_counts = Counter(word for word in words if word in dictionary)
