@@ -69,6 +69,26 @@ class WordCounter(Counter):
     def most_common(self, *args, **kwargs):
         return self.wrapped.most_common(*args, **kwargs)
 
+    def plot_frequency(self, n=N_MAX_WORDS_TO_PLOT):
+        """
+        Graph frequency of words
+        passed as sequence of (word, count) tuples
+        (such as returned by
+        WordCounter.most_common() or LetterCounter.most_common()).
+        """
+
+        words, counts = zip(*self.wrapped.most_common(n))
+
+        plt.rcdefaults()
+        plt.barh(range(len(counts)), counts, align='center')
+        plt.tick_params(labelsize='small', pad=2.5)
+        plt.title('Word Frequency')
+        plt.xlabel('Counts')
+        plt.ylabel('Words')
+        plt.yticks(range(len(words)), words, fontsize=10)
+
+        plt.show()
+
 
 class LetterCounter(WordCounter):
     """
@@ -85,24 +105,3 @@ class LetterCounter(WordCounter):
         dictionary = set(ascii_lowercase)
 
         return words, dictionary
-
-
-def plot_word_frequency(word_counts):
-    """
-    Graph frequency of words
-    passed as sequence of (word, count) tuples
-    (such as returned by
-    WordCounter.most_common() or LetterCounter.most_common()).
-    """
-
-    words, counts = zip(*word_counts[:N_MAX_WORDS_TO_PLOT])
-
-    plt.rcdefaults()
-    plt.barh(range(len(counts)), counts, align='center')
-    plt.tick_params(labelsize='small', pad=2.5)
-    plt.title('Word Frequency')
-    plt.xlabel('Counts')
-    plt.ylabel('Words')
-    plt.yticks(range(len(words)), words, fontsize=10)
-
-    plt.show()
