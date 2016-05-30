@@ -111,9 +111,9 @@ class LetterCounter(WordCounter):
 
 def frequency_plot(word_counts):
     """
-    Graph frequency of words versus their counts
-    passed as collection of (word, count) tuples
-    (such as those returned by
+    Graph frequency of words
+    passed as sequence of (word, count) tuples
+    (such as returned by
     WordCounter.most_common() or LetterCounter.most_common()).
     """
 
