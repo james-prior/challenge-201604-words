@@ -21,6 +21,8 @@ class WordCounter(Counter):
     counts.
     """
 
+    key_name = 'word'
+
     @staticmethod
     def _sanitize(text):
         """
@@ -82,9 +84,9 @@ class WordCounter(Counter):
         plt.rcdefaults()
         plt.barh(range(len(counts)), counts, align='center')
         plt.tick_params(labelsize='small', pad=2.5)
-        plt.title('Word Frequency')
+        plt.title('%s Counts' % self.key_name.capitalize())
         plt.xlabel('Counts')
-        plt.ylabel('Words')
+        plt.ylabel('%ss' % self.key_name.capitalize())
         plt.yticks(range(len(words)), words, fontsize=10)
 
         plt.show()
@@ -98,6 +100,8 @@ class LetterCounter(WordCounter):
 
     Each letter of the text is defined as a word.
     """
+
+    key_name = 'letter'
 
     def _get_words_and_dictionary(self, text, dictionary_filename):
         words = list(text.lower())
