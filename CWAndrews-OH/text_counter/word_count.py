@@ -24,26 +24,6 @@ class WordCounter:
     """
 
     @staticmethod
-    def _word_counter(text, n=None, dictionary_filename=None):
-        '''
-        Return a list of the n most common words and their counts from
-        the most common to the least. If n is None, returns all words.
-        Words with equal counts are ordered arbitrarily.
-
-        Words are from text that are in dictionary in specified file.
-
-        If n is None, all words will be returned.
-        '''
-
-        with open(dictionary_filename) as f:
-            dictionary = set(f.read().lower().split())
-
-        words = text.lower().split()
-        word_counts = Counter(word for word in words if word in dictionary)
-
-        return word_counts.most_common(n)
-
-    @staticmethod
     def _sanitize(text):
         """
         Performs additional processing (sanitization) of text.
@@ -60,14 +40,35 @@ class WordCounter:
 
         return special_characters_pattern.sub('', text)
 
+    @staticmethod
+    def _word_counter(text, n=None, dictionary_filename=None):
+        '''
+        Return a list of the n most common words and their counts from
+        the most common to the least. If n is None, returns all words.
+        Words with equal counts are ordered arbitrarily.
+
+        Words are from text that are in dictionary in specified file.
+
+        If n is None, all words will be returned.
+        '''
+
+        text = WordCounter._sanitize(text)
+        words = text.lower().split()
+
+        with open(dictionary_filename) as f:
+            dictionary = set(f.read().lower().split())
+
+        word_counts = Counter(word for word in words if word in dictionary)
+
+        return word_counts.most_common(n)
+
     def read_in_string(self, text, n=10):
         """
         Return a sorted list of the #n# most common words and their
         counts in a tuple.
         """
 
-        return self._word_counter(
-            self._sanitize(text), n, ENGLISH_DICTIONARY_FILENAME)
+        return self._word_counter(text, n, ENGLISH_DICTIONARY_FILENAME)
 
     def read_in_file(self, filepath, n=10):
         """
@@ -106,9 +107,11 @@ class LetterCounter(WordCounter):
         which counts letters instead of words.
         """
 
+        text = WordCounter._sanitize(text)
+        words = list(text.lower())
+
         dictionary = set(ascii_lowercase)
 
-        words = list(text.lower())
         word_counts = Counter(word for word in words if word in dictionary)
 
         return word_counts.most_common(n)
