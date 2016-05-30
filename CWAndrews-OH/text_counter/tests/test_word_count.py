@@ -18,11 +18,11 @@ ONE_LINE_STRING = (
     'This is just another string but longer and with no newlines '
     'to test the read_in_string method. is is.')
 
-TEXT_FRANKEN = 'static/pg84.txt'
-TEXT_FRANKEN_ABRIDGED = 'static/pg84_super_abridged.txt'
-TEXT_MOON = 'static/pg83.txt'
-TEXT_LINE_MULTI = 'static/test.txt'
-TEXT_LINE_ONE = 'static/one_line_test.txt'
+FRANKENSTEIN_BOOK_FILENAME = 'static/pg84.txt'
+ABRIDGED_FRANKENSTEIN_BOOK_FILENAME = 'static/pg84_super_abridged.txt'
+MOON_BOOK_FILENAME = 'static/pg83.txt'
+MULTI_LINE_FILENAME = 'static/test.txt'
+ONE_LINE_FILENAME = 'static/one_line_test.txt'
 
 
 @pytest.fixture("class")
@@ -45,14 +45,14 @@ def strings_list():
     "generator_words_good", "generator_words_dirty", "strings_list")
 class TestWordCounter:
     def test_char_counter_io(self):
-        counted_list = WordCounter._word_counter(
+        counted_list = WordCounter(
             generator_words_good(),
-            n=5,
-            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME).most_common(5)
         counts_only = [obj[1] for obj in counted_list]
 
-        assert WordCounter._word_counter(
-            generator_words_dirty(), 5, ENGLISH_DICTIONARY_FILENAME)
+        assert WordCounter(
+            generator_words_dirty(), ENGLISH_DICTIONARY_FILENAME
+        ).most_common(5)
 
         assert isinstance(counted_list, list)
 
@@ -64,10 +64,10 @@ class TestWordCounter:
         for i in range(len(counts_only) - 1):
             assert counts_only[i] >= counts_only[i + 1]
 
-        assert WordCounter._word_counter(
+        assert WordCounter(
             generator_words_good(),
-            n=5,
-            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME
+        ).most_common(5)
 
     def test_char_counter_returns_only_english_words(self):
         english_words = './static/english_words.txt'
@@ -76,10 +76,10 @@ class TestWordCounter:
                 eng_word.lower().rstrip('\n')
                 for eng_word in eng_dict.readlines()])
 
-        clean_counted_list = WordCounter._word_counter(
+        clean_counted_list = WordCounter(
             generator_words_dirty(),
-            n=3,
-            dictionary_filename=ENGLISH_DICTIONARY_FILENAME)
+            dictionary_filename=ENGLISH_DICTIONARY_FILENAME
+        ).most_common(3)
         words_only = [word[0] for word in clean_counted_list]
 
         for not_word in ('dfadfskj', '?!%G1'):
@@ -90,20 +90,19 @@ class TestWordCounter:
 
     def test_length_matches_returned_word_count(self):
         for n_words in (15, 35):
-            assert len(
-                WordCounter().read_in_file(filepath=TEXT_FRANKEN,
-                n=n_words)
+            assert len(WordCounter(
+                open(FRANKENSTEIN_BOOK_FILENAME).read()).most_common(n_words)
             ) == n_words
 
     def test_return_all_if_length_gt_words_in_text(self):
-        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=500)
+        assert WordCounter(open(MULTI_LINE_FILENAME).read()).most_common(500)
 
     def test_length_none_returns_all_words(self):
-        assert WordCounter().read_in_file(filepath=TEXT_LINE_MULTI, n=None)
+        assert WordCounter(open(MULTI_LINE_FILENAME).read()).most_common(None)
 
     def test_sanitizer_io(self):
         for text in (strings_list(), ):
-            assert WordCounter()._sanitize(text)
+            assert WordCounter._sanitize(text)
 
     def test_sanitizer_sanitizes(self):
         spec_chars_re = re.compile("[\d?|!]")
@@ -114,54 +113,58 @@ class TestWordCounter:
     def test_read_in_file_io(self):
         gutenberg_re = re.compile("(ebook|electronic|computer)")
 
-        for test_text in (TEXT_LINE_MULTI, TEXT_LINE_ONE):
+        for test_text in (MULTI_LINE_FILENAME, ONE_LINE_FILENAME):
             assert isinstance(
-                WordCounter().read_in_file(filepath=test_text), list)
+                WordCounter(open(test_text).read()).most_common(), list)
 
-        for count_tuple in WordCounter().read_in_file(
-                filepath=TEXT_FRANKEN_ABRIDGED, n=None):
+        for count_tuple in WordCounter(
+                open(ABRIDGED_FRANKENSTEIN_BOOK_FILENAME).read()
+                ).most_common(None):
             assert not gutenberg_re.findall(count_tuple[0])
 
     def test_read_in_file_any_gutenbook(self):
-        for test_text in (TEXT_FRANKEN, TEXT_MOON):
-            assert WordCounter().read_in_file(test_text, n=5)
+        for test_text in (FRANKENSTEIN_BOOK_FILENAME, MOON_BOOK_FILENAME):
+            assert WordCounter(open(test_text).read()).most_common(5)
 
     def test_read_in_string_io(self):
         for text in (MULTI_LINE_STRING, ONE_LINE_STRING):
-            assert isinstance((WordCounter().read_in_string(text)), list)
+            assert isinstance(WordCounter(text).most_common(), list)
 
 
 class TestLetterCounter:
 
     def test_char_counter_io(self):
         assert isinstance(
-            LetterCounter()._word_counter(generator_words_good(), n=5), list)
+            LetterCounter(generator_words_good()).most_common(5), list)
 
     def test_letter_counter_io(self):
-        assert LetterCounter().read_in_file(filepath=TEXT_FRANKEN_ABRIDGED)
-        assert isinstance(LetterCounter().read_in_file(
-            filepath=TEXT_FRANKEN_ABRIDGED), list)
+        assert LetterCounter(
+            open(ABRIDGED_FRANKENSTEIN_BOOK_FILENAME).read()).most_common()
+        assert isinstance(LetterCounter(
+            open(ABRIDGED_FRANKENSTEIN_BOOK_FILENAME).read()).most_common(),
+            list)
 
-        assert LetterCounter().read_in_string(MULTI_LINE_STRING)
+        assert LetterCounter(MULTI_LINE_STRING).most_common()
         assert isinstance(
-            LetterCounter().read_in_string(MULTI_LINE_STRING), list)
+            LetterCounter(MULTI_LINE_STRING).most_common(), list)
 
     def test_read_in_file_any_gutenbook(self):
-        for test_text in (TEXT_FRANKEN, TEXT_MOON):
-            assert LetterCounter().read_in_file(test_text, n=5)
+        for test_text in (FRANKENSTEIN_BOOK_FILENAME, MOON_BOOK_FILENAME):
+            assert LetterCounter(open(test_text).read()).most_common(5)
 
     def test_diff_n_letters(self):
         n_letters_tup = 1, 26
 
         for n_letters in n_letters_tup:
-            letter_count = LetterCounter().read_in_file(
-                filepath=TEXT_FRANKEN, n=n_letters)
+            letter_count = LetterCounter(
+                open(FRANKENSTEIN_BOOK_FILENAME).read()).most_common(n_letters)
             assert len(letter_count) == n_letters
 
     def test_all_letters(self):
-        assert LetterCounter().read_in_file(
-            filepath=TEXT_FRANKEN_ABRIDGED, n=None)
+        assert LetterCounter(
+            open(ABRIDGED_FRANKENSTEIN_BOOK_FILENAME).read()).most_common(None)
 
     def test_counts_letters_only(self):
-        assert len(LetterCounter().read_in_file(
-            filepath=TEXT_FRANKEN, n=27)) == 26
+        assert len(LetterCounter(
+            open(FRANKENSTEIN_BOOK_FILENAME).read()
+        ).most_common(27)) == 26
