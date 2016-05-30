@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 # 230k+ words from the standard UNIX dict in a local text file
 # ('/usr/share/dict/words')
 ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
-N_MAX_WORDS_TO_PLOT = 30
+N_MAX_ITEMS_TO_PLOT = 30
 
 
 class WordCounter(Counter):
@@ -71,7 +71,7 @@ class WordCounter(Counter):
     def most_common(self, *args, **kwargs):
         return self.wrapped.most_common(*args, **kwargs)
 
-    def plot_frequency(self, n=N_MAX_WORDS_TO_PLOT):
+    def plot_frequency(self, n=N_MAX_ITEMS_TO_PLOT):
         """
         Graph frequency of words
         passed as sequence of (word, count) tuples
