@@ -109,7 +109,7 @@ class LetterCounter(WordCounter):
         return word_counts.most_common(n)
 
 
-def frequency_plot(word_counts):
+def plot_word_frequency(word_counts):
     """
     Graph frequency of words
     passed as sequence of (word, count) tuples
