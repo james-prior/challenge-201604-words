@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 # 230k+ words from the standard UNIX dict in a local text file
 # ('/usr/share/dict/words')
 ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
+N_MAX_WORDS_TO_PLOT = 30
 
 
 class WordCounter:
@@ -114,7 +115,7 @@ def frequency_plot(word_counts):
     (WordCounter, LetterCounter).
     """
 
-    dict_counted = OrderedDict(word_counts[:30])
+    dict_counted = OrderedDict(word_counts[:N_MAX_WORDS_TO_PLOT])
 
     plt.rcdefaults()
     plt.barh(range(len(dict_counted)), dict_counted.values(), align='center')
