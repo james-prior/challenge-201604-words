@@ -51,7 +51,7 @@ class WordCounter:
             for word in islice(genexp_words_common_most, n):
                 list_words_master.append(word)
         else:
-            for word in genexp_words_common_most:
+            for word in islice(genexp_words_common_most, n):
                 list_words_master.append(word)
 
         list_words_master.sort(
