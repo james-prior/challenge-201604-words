@@ -3,7 +3,7 @@
 
 import re
 from string import ascii_lowercase
-from collections import Counter, OrderedDict
+from collections import Counter
 from os.path import exists, isfile
 from itertools import islice
 
@@ -117,14 +117,14 @@ def frequency_plot(word_counts):
     WordCounter.most_common() or LetterCounter.most_common()).
     """
 
-    dict_counted = OrderedDict(word_counts[:N_MAX_WORDS_TO_PLOT])
+    words, counts = zip(*word_counts[:N_MAX_WORDS_TO_PLOT])
 
     plt.rcdefaults()
-    plt.barh(range(len(dict_counted)), dict_counted.values(), align='center')
+    plt.barh(range(len(counts)), counts, align='center')
     plt.tick_params(labelsize='small', pad=2.5)
     plt.title('Word Frequency')
     plt.xlabel('Counts')
     plt.ylabel('Words')
-    plt.yticks(range(len(dict_counted)), dict_counted.keys(), fontsize=10)
+    plt.yticks(range(len(words)), words, fontsize=10)
 
     plt.show()
