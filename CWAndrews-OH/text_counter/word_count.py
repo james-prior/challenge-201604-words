@@ -5,7 +5,7 @@ import re
 from string import ascii_lowercase
 from collections import Counter
 from os.path import exists, isfile
-from itertools import islice
+import requests
 
 import matplotlib.pyplot as plt
 
@@ -78,6 +78,15 @@ class WordCounter:
         with open(filepath) as f:
             text = f.read()
 
+        return self.read_in_string(text, n)
+
+    def read_in_url(self, url, n=10):
+        """
+        Return sorted list of the #n# most common words and their
+        counts in a tuple.
+        """
+
+        text = requests.get(url).text
         return self.read_in_string(text, n)
 
 
