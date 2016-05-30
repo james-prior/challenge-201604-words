@@ -4,8 +4,6 @@
 import re
 from string import ascii_lowercase
 from collections import Counter
-from os.path import exists, isfile
-import requests
 
 import matplotlib.pyplot as plt
 
@@ -16,7 +14,7 @@ ENGLISH_DICTIONARY_FILENAME = 'static/english_words.txt'
 N_MAX_WORDS_TO_PLOT = 30
 
 
-class WordCounter:
+class WordCounter(Counter):
     """
     Read text from string or file, counts words, and returns sorted
     list of tuples with the n most common words and their respective
@@ -40,8 +38,15 @@ class WordCounter:
 
         return special_characters_pattern.sub('', text)
 
-    @staticmethod
-    def _word_counter(text, n=None, dictionary_filename=None):
+    def _get_words_and_dictionary(self, text, dictionary_filename):
+        words = text.lower().split()
+
+        with open(dictionary_filename) as f:
+            dictionary = set(f.read().lower().split())
+
+        return words, dictionary
+
+    def __init__(self, text, dictionary_filename=ENGLISH_DICTIONARY_FILENAME):
         '''
         Return a list of the n most common words and their counts from
         the most common to the least. If n is None, returns all words.
@@ -52,43 +57,17 @@ class WordCounter:
         If n is None, all words will be returned.
         '''
 
-        text = WordCounter._sanitize(text)
-        words = text.lower().split()
+        words, dictionary = self._get_words_and_dictionary(
+            self._sanitize(text),
+            dictionary_filename)
 
-        with open(dictionary_filename) as f:
-            dictionary = set(f.read().lower().split())
+        # print('words', words[:10])
+        # print('dictionary', dictionary)
 
-        word_counts = Counter(word for word in words if word in dictionary)
+        self.wrapped = Counter(word for word in words if word in dictionary)
 
-        return word_counts.most_common(n)
-
-    def read_in_string(self, text, n=10):
-        """
-        Return a sorted list of the #n# most common words and their
-        counts in a tuple.
-        """
-
-        return self._word_counter(text, n, ENGLISH_DICTIONARY_FILENAME)
-
-    def read_in_file(self, filepath, n=10):
-        """
-        Return sorted list of the #n# most common words and their
-        counts in a tuple.
-        """
-
-        with open(filepath) as f:
-            text = f.read()
-
-        return self.read_in_string(text, n)
-
-    def read_in_url(self, url, n=10):
-        """
-        Return sorted list of the #n# most common words and their
-        counts in a tuple.
-        """
-
-        text = requests.get(url).text
-        return self.read_in_string(text, n)
+    def most_common(self, *args, **kwargs):
+        return self.wrapped.most_common(*args, **kwargs)
 
 
 class LetterCounter(WordCounter):
@@ -100,21 +79,12 @@ class LetterCounter(WordCounter):
     Each letter of the text is defined as a word.
     """
 
-    @staticmethod
-    def _word_counter(text, n=None, dictionary_filename=None):
-        """
-        Overridden method from parent class, WordCounter,
-        which counts letters instead of words.
-        """
-
-        text = WordCounter._sanitize(text)
+    def _get_words_and_dictionary(self, text, dictionary_filename):
         words = list(text.lower())
 
         dictionary = set(ascii_lowercase)
 
-        word_counts = Counter(word for word in words if word in dictionary)
-
-        return word_counts.most_common(n)
+        return words, dictionary
 
 
 def plot_word_frequency(word_counts):
