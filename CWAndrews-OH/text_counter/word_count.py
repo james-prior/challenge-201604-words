@@ -122,7 +122,7 @@ def frequency_plot(word_counts):
     plt.tick_params(labelsize='small', pad=2.5)
     plt.title('Word Frequency')
     plt.xlabel('Counts')
-    plt.ylabel('Counted')
+    plt.ylabel('Words')
     plt.yticks(range(len(dict_counted)), dict_counted.keys(), fontsize=10)
 
     plt.show()
