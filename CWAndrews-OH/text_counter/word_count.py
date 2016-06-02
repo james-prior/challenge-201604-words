@@ -71,12 +71,11 @@ class WordCounter(Counter):
     def most_common(self, *args, **kwargs):
         return self.wrapped.most_common(*args, **kwargs)
 
-    def plot_frequency(self, n=N_MAX_ITEMS_TO_PLOT):
+    def plot_counts(self, n=N_MAX_ITEMS_TO_PLOT):
         """
-        Graph frequency of words
-        passed as sequence of (word, count) tuples
-        (such as returned by
-        WordCounter.most_common() or LetterCounter.most_common()).
+        Graph counts of n most common words.
+
+        n is optional and defaults to N_MAX_ITEMS_TO_PLOT.
         """
 
         words, counts = zip(*self.wrapped.most_common(n))
