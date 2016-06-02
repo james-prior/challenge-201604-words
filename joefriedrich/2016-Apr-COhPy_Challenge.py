@@ -32,10 +32,13 @@ def get_book_from_gutenberg_website(book_number):
         book_number)
     return requests.get(url)
 
+def is_valid_word(word):
+    return len(word) > 1 or word in VALID_ONE_LETTER_WORDS
+
 def count_words(words):
     return Counter(
         word for word in words
-        if len(word) > 1 or word in VALID_ONE_LETTER_WORDS
+        if is_valid_word(word)
     )
 
 def main():
