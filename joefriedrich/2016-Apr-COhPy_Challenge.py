@@ -16,6 +16,7 @@ import requests
 import re
 
 from collections import Counter
+from functools import partial
 
 VALID_ONE_LETTER_WORDS = set(('A', 'a', 'I'))
 
@@ -67,19 +68,15 @@ def main():
     print('Counting words.')
     word_counts = count_words(words)
 
-    while True:
-        prompt = (
-            '',
-            'What would you like to see?',
-            '-Type a word to see how many times it appears.',
-            '-Type a number to see that number of top words.',
-            '-Type a super huge number to get all words.',
-            '-Type q to quit:  ',
-        )
-        user_choice = input('\n'.join(prompt))
-        if user_choice.lower() == 'q':
-            break
-
+    prompt = (
+        '',
+        'What would you like to see?',
+        '-Type a word to see how many times it appears.',
+        '-Type a number to see that number of top words.',
+        '-Type a super huge number to get all words.',
+        '-Type q to quit:  ',
+    )
+    for user_choice in iter(partial(input, '\n'.join(prompt)), 'q'):
         print()
         if word_pattern.search(user_choice):
             word = user_choice
