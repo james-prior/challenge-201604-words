@@ -68,15 +68,15 @@ def main():
     print('Counting words.')
     word_counts = count_words(words)
 
-    prompt = (
+    prompt = '\n'.join((
         '',
         'What would you like to see?',
         '-Type a word to see how many times it appears.',
         '-Type a number to see that number of top words.',
         '-Type a super huge number to get all words.',
         '-Type q to quit:  ',
-    )
-    for user_choice in iter(partial(input, '\n'.join(prompt)), 'q'):
+    ))
+    for user_choice in iter(partial(input, prompt), 'q'):
         print()
         if word_pattern.search(user_choice):
             word = user_choice
