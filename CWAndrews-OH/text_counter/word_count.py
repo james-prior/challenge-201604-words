@@ -15,21 +15,29 @@ N_MAX_ITEMS_TO_PLOT = 30
 
 
 class WordCounter(Counter):
-    """
+    '''
     Read text from string or file, counts words, and returns sorted
     list of tuples with the n most common words and their respective
     counts.
-    """
+
+     (subclassed from Counter)
+
+    Return a list of the n most common words and their counts from
+    the most common to the least. If n is None, returns all words.
+    Words with equal counts are ordered arbitrarily.
+
+    If n is None, all words will be returned.
+    '''
 
     key_name = 'word'
 
     @staticmethod
     def _sanitize(text):
-        """
-        Performs additional processing (sanitization) of text.
-
-        Particularly, removes special characters.
-        """
+        '''
+        Returns text
+            without "special characters" and
+            without Project Gutenberg header and tail.
+        '''
 
         gutenberg_boilerplate_pattern = re.compile("\n{10}")
         if ("GUTENBERG" in text and
@@ -41,6 +49,19 @@ class WordCounter(Counter):
         return special_characters_pattern.sub('', text)
 
     def _get_words_and_dictionary(self, text, dictionary_filename):
+        '''Returns words and dictionary
+        for given text and dictionary_filename.
+
+        text is a (possibly large, multi-line) string.
+        dictionary_filename is the name of a file which has one word per
+        line.
+
+        words is a list of the words
+        from text converted to lowercase, delimited by whitespace.
+        dictionary is a set of the words read from the
+        dictionary_filename, converted to lowercase.
+        '''
+
         words = text.lower().split()
 
         with open(dictionary_filename) as f:
@@ -50,14 +71,15 @@ class WordCounter(Counter):
 
     def __init__(self, text, dictionary_filename=ENGLISH_DICTIONARY_FILENAME):
         '''
-        Return a list of the n most common words and their counts from
-        the most common to the least. If n is None, returns all words.
-        Words with equal counts are ordered arbitrarily.
+        Creates an object that counts words
+        from the (possibly large, multi-line) text
+        that are in the dictionary read from the
+        dictionary_filename file.
 
-        Words are from text that are in dictionary in specified file.
+        The dictionary file has one word per line.
 
-        If n is None, all words will be returned.
-        '''
+        The default dictionary_filename is '%s'.
+        ''' % (ENGLISH_DICTIONARY_FILENAME, )
 
         words, dictionary = self._get_words_and_dictionary(
             self._sanitize(text),
@@ -72,11 +94,12 @@ class WordCounter(Counter):
         return self.wrapped.most_common(*args, **kwargs)
 
     def plot_counts(self, n=N_MAX_ITEMS_TO_PLOT):
-        """
+        '''
         Graph counts of n most common words.
 
         n is optional and defaults to N_MAX_ITEMS_TO_PLOT.
-        """
+        If n is None, counts of all words will be plotted.
+        '''
 
         words, counts = zip(*self.wrapped.most_common(n))
 
@@ -92,17 +115,29 @@ class WordCounter(Counter):
 
 
 class LetterCounter(WordCounter):
-    """
-    Read text from string or file, counts words, and returns sorted
-    list of tuples with the n most common words and their respective
-    counts.
+    '''
+    Counts letters in given text.
+    text is converted to lowercase before counting the letters.
 
-    Each letter of the text is defined as a word.
-    """
+    Subclass of WordCounter, so see WordCounter for inherited methods.
+    '''
 
     key_name = 'letter'
 
     def _get_words_and_dictionary(self, text, dictionary_filename):
+        '''Returns words and dictionary
+        for given text and dictionary_filename.
+
+        text is a (possibly large, multi-line) string.
+        dictionary_filename is ignored.
+
+        words is a list of the individual characters
+        of text converted to lowercase.
+        In other words, each character of text is defined to be a word.
+        dictionary is a set of the lowercase letters of the English
+        alphabet.
+        '''
+
         words = list(text.lower())
 
         dictionary = set(ascii_lowercase)
