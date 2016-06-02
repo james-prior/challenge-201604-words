@@ -68,12 +68,15 @@ def main():
     word_counts = count_words(words)
 
     while True:
-        print()
-        print('What would you like to see?')
-        print('-Type a word to see how many times it appears.')
-        print('-Type a number to see that number of top words.')
-        print('-Type a super huge number to get all words.')
-        user_choice = input('-Type q to quit:  ')
+        prompt = (
+            '',
+            'What would you like to see?',
+            '-Type a word to see how many times it appears.',
+            '-Type a number to see that number of top words.',
+            '-Type a super huge number to get all words.',
+            '-Type q to quit:  ',
+        )
+        user_choice = input('\n'.join(prompt))
         if user_choice.lower() == 'q':
             break
 
