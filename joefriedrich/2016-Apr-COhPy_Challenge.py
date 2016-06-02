@@ -24,7 +24,7 @@ def get_book_from_gutenberg_website(book_number):
         class Namespace:
             pass
         foo = Namespace()
-        filename = 'efloehr/pg%s.txt' % book_number
+        filename = '../efloehr/pg%s.txt' % book_number
         foo.text = open(filename).read()
         return foo
 
