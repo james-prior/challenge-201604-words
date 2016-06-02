@@ -88,10 +88,10 @@ class WordCounter(Counter):
         # print('words', words[:10])
         # print('dictionary', dictionary)
 
-        self.wrapped = Counter(word for word in words if word in dictionary)
+        self.counter = Counter(word for word in words if word in dictionary)
 
     def most_common(self, *args, **kwargs):
-        return self.wrapped.most_common(*args, **kwargs)
+        return self.counter.most_common(*args, **kwargs)
 
     def plot_counts(self, n=N_MAX_ITEMS_TO_PLOT):
         '''
@@ -101,7 +101,7 @@ class WordCounter(Counter):
         If n is None, counts of all words will be plotted.
         '''
 
-        words, counts = zip(*self.wrapped.most_common(n))
+        words, counts = zip(*self.counter.most_common(n))
 
         plt.rcdefaults()
         plt.barh(range(len(counts)), counts, align='center')
