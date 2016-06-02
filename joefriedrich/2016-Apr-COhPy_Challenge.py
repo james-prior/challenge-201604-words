@@ -17,7 +17,7 @@ import re
 
 from collections import Counter
 
-VALID_ONE_LETTER_WORDS = ('A', 'a', 'I')
+VALID_ONE_LETTER_WORDS = set(('A', 'a', 'I'))
 
 def get_book_from_gutenberg_website(book_number):
     if True:  # Temporary hack to read file instead of website.
