@@ -1,0 +1,22 @@
+todo
+
+Rework docstrings.
+
+How to set up data of WordCounter object 
+so that it inherits Counter methods in a useful way?
+    astract base classes?
+
+How about having a project gutenberg module?
+    would get all gutenberg specific stuff out of Word_Counter
+    get_project_gutenberg_book(83)
+    .body() # strips boilerplate
+
+do the tests in a pytest-thonic way: they need some serious love
+    get rid of large tests (for which meaningful answer is not known)
+    add many small tests (for which correct result is easy to figure out)
+    Jason?
+
+how to add more comments to old commits?
+    rebase magic?
+
+Are counts correct?
