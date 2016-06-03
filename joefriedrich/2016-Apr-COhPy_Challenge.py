@@ -88,14 +88,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-'''TODO
-Add docstrings to module and each function.
-    Follow PEP 257.
-    Avoid internal details; those go in comments.
-Generalize to handle non-Project Gutenberg books.
-    Allow to specify URL?
-Allow user to specify file instead of URL.
-Workaround PG request limits?
-    Remove hack code of get_book_from_gutenberg_website().
-'''
