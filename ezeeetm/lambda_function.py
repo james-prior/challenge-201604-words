@@ -25,9 +25,9 @@ def get_url(id):
     print(url)
     return url
 
-def get_book_txt_zip(zip_url, local_zip_filename):
-    resp = requests.get(zip_url, stream=True)
-    with open(local_zip_filename, 'wb') as f:
+def fetch_url_save_file(url, filename):
+    resp = requests.get(url, stream=True)
+    with open(filename, 'wb') as f:
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
@@ -85,7 +85,7 @@ def lambda_handler(event, context):
     print(local_zip_filename)
     
     zip_url = get_url(id)
-    get_book_txt_zip(zip_url, local_zip_filename)
+    fetch_url_save_file(zip_url, local_zip_filename)
     words = get_words(local_zip_filename, id)
     word_counts = collections.Counter(words)
     most_common_words = word_counts.most_common(10)
