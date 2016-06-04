@@ -42,12 +42,12 @@ def get_words(local_zip, id):
     words = filter(None, words)  # Removes empty strings.
     return words
 
-def word_list_to_freq_dict(wordlist):
-    wordfreq = [wordlist.count(p) for p in wordlist]
-    return dict(zip(wordlist,wordfreq))
+def count_words(words):
+    counts = [words.count(p) for p in words]
+    return dict(zip(words, counts))
 
-def sort_freq_dict(freqdict):
-    aux = [(freqdict[key], key) for key in freqdict]
+def sort_word_counts(word_counts):
+    aux = [(word_counts[key], key) for key in word_counts]
     aux.sort()
     aux.reverse()
     return aux[:10]
@@ -62,7 +62,7 @@ def test(results):
     if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one: Exception
     Traceback(most recent call last):
     File "/var/task/lambda_function.py", line 73, in lambda_handler
-    test(word_freq_list_sorted) File "/var/task/lambda_function.py", line 57, in test
+    test(sorted_word_counts) File "/var/task/lambda_function.py", line 57, in test
     raise Exception(exception)
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
@@ -78,11 +78,11 @@ def test(results):
             raise Exception(exception)
     return True
 
-def upload_to_s3(id, word_freq_list):
+def upload_to_s3(id, word_counts):
     s3 = boto3.resource('s3')
     bucket = 'gutenberg-out'
     key = "%s.json" % id
-    body = json.dumps(word_freq_list)
+    body = json.dumps(word_counts)
     s3.Object(bucket, key).put(Body=body)
 
 def clean_up(local_zip):
@@ -96,11 +96,11 @@ def lambda_handler(event, context):
     
     zip_url = url_factory(id)
     get_book_txt_zip(zip_url, local_zip)
-    word_list = get_words(local_zip, id)
-    word_freq_list = word_list_to_freq_dict(word_list)
-    word_freq_list_sorted = sort_freq_dict(word_freq_list)
-    test(word_freq_list_sorted)
-    upload_to_s3(id, word_freq_list)
+    words = get_words(local_zip, id)
+    word_counts = count_words(words)
+    sorted_word_counts = sort_word_counts(word_counts)
+    test(sorted_word_counts)
+    upload_to_s3(id, word_counts)
     
-    print(word_freq_list_sorted)
+    print(sorted_word_counts)
     clean_up()
