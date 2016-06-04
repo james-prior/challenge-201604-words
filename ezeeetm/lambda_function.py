@@ -14,10 +14,7 @@ def url_factory(id):
         if id <= 9:
             directories.append('0')
         else:
-            id_array = [int(i) for i in str(id)]
-            del id_array[-1]
-            for i in id_array:
-                directories.append(str(i))
+            directories.extend(list(str(id))[:-1])
         directories.append(str(id))
         path = '/'.join(directories)
         url = "http://www.gutenberg.lib.md.us/%s/%s.zip" % (path, id)
