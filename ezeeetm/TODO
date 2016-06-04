@@ -1,0 +1,2 @@
+Create context manager for the local zip file to remove it
+regardless of what happens.
