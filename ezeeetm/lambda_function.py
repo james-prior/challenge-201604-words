@@ -44,12 +44,11 @@ def get_words(local_zip, id):
 
 def count_words(words):
     counts = (words.count(p) for p in words)
-    return dict(zip(words, counts))
+    return zip(counts, words)
 
-def sort_word_counts(word_counts):
-    aux = ((count, word) for word, count in word_counts.items())
-    aux = sorted(aux, reverse=True)
-    return aux[:10]
+def sort_count_word_tuples(count_word_tuples):
+    sorted_count_word_tuples = sorted(count_word_tuples, reverse=True)
+    return sorted_count_word_tuples[:10]
 
 def test(results):
     """This function tests that words in result sets satisfy the
@@ -61,7 +60,7 @@ def test(results):
     if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one: Exception
     Traceback(most recent call last):
     File "/var/task/lambda_function.py", line 73, in lambda_handler
-    test(sorted_word_counts) File "/var/task/lambda_function.py", line 57, in test
+    test(sorted_count_word_tuples) File "/var/task/lambda_function.py", line 57, in test
     raise Exception(exception)
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
@@ -96,10 +95,10 @@ def lambda_handler(event, context):
     zip_url = url_factory(id)
     get_book_txt_zip(zip_url, local_zip)
     words = get_words(local_zip, id)
-    word_counts = count_words(words)
-    sorted_word_counts = sort_word_counts(word_counts)
-    test(sorted_word_counts)
+    count_word_tuples = count_words(words)
+    sorted_count_word_tuples = sort_count_word_tuples(count_word_tuples)
+    test(sorted_count_word_tuples)
     upload_to_s3(id, word_counts)
     
-    print(sorted_word_counts)
+    print(sorted_count_word_tuples)
     clean_up()
