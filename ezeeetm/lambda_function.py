@@ -10,11 +10,10 @@ import json
 
 def url_factory(id):
     try:
-        directories = []
         if id <= 9:
-            directories.append('0')
+            directories = ['0']
         else:
-            directories.extend(list(str(id))[:-1])
+            directories = list(str(id))[:-1]
         directories.append(str(id))
         path = '/'.join(directories)
         url = "http://www.gutenberg.lib.md.us/%s/%s.zip" % (path, id)
