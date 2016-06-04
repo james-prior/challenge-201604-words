@@ -8,7 +8,7 @@ import re
 import boto3
 import json
 
-def url_factory(id):
+def get_url(id):
     try:
         is_single_digit = id <= 9
     except ValueError:
@@ -84,7 +84,7 @@ def lambda_handler(event, context):
     print(id)
     print(local_zip_filename)
     
-    zip_url = url_factory(id)
+    zip_url = get_url(id)
     get_book_txt_zip(zip_url, local_zip_filename)
     words = get_words(local_zip_filename, id)
     word_counts = collections.Counter(words)
