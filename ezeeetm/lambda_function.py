@@ -57,8 +57,9 @@ def test(word_counts):
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
 
+    word_pattern = re.compile(r'\b[a-z]+\b')
     for word, count in word_counts:
-        match = re.match(r'\b[a-z]+\b', word)
+        match = word_pattern.match(word)
         if not match:
             raise Exception(
                 "if you got word problems I feel bad for you son.  "
