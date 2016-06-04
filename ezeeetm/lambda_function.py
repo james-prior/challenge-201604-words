@@ -33,9 +33,9 @@ def fetch_url_save_file(url, filename):
                 f.write(chunk)
 
 def get_words(zip_filename, id):
-    file_name = "%s.txt" % id
+    txt_filename = "%s.txt" % id
     zf = zipfile.ZipFile(zip_filename)
-    text = zf.read(file_name).lower()
+    text = zf.read(txt_filename).lower()
     # Remove punctuation.
     text = ''.join(c for c in text if c not in string.punctuation)
     words = text.replace('\r\n',' ').replace('\"','').split(' ')
