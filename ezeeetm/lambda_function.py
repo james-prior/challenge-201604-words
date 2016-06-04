@@ -8,6 +8,8 @@ import re
 import boto3
 import json
 
+DEFAULT_N_MOST_COMMON_WORDS = 10
+
 def get_url(id):
     try:
         is_single_digit = id <= 9
@@ -80,6 +82,7 @@ def clean_up(local_zip_filename):
 
 def lambda_handler(event, context):
     id = event['id']
+    n = event.get('n', DEFAULT_N_MOST_COMMON_WORDS)
     local_zip_filename = "/tmp/%s.zip" % id
     print(id)
     print(local_zip_filename)
@@ -88,7 +91,7 @@ def lambda_handler(event, context):
     fetch_url_save_file(zip_url, local_zip_filename)
     words = get_words(local_zip_filename, id)
     word_counts = collections.Counter(words)
-    most_common_words = word_counts.most_common(10)
+    most_common_words = word_counts.most_common(n)
     test(most_common_words)
     upload_to_s3(id, word_counts)
     
