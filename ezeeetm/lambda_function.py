@@ -24,7 +24,6 @@ def get_url(id):
     directories.append(str(id))
     path = '/'.join(directories)
     url = "http://www.gutenberg.lib.md.us/%s/%s.zip" % (path, id)
-    print(url)
     return url
 
 def fetch_url_save_file(url, filename):
@@ -82,12 +81,13 @@ def clean_up(local_zip_filename):
 
 def lambda_handler(event, context):
     id = event['id']
+    print(id)
     n = event.get('n', DEFAULT_N_MOST_COMMON_WORDS)
     local_zip_filename = "/tmp/%s.zip" % id
-    print(id)
     print(local_zip_filename)
-    
     zip_url = get_url(id)
+    print(zip_url)
+
     fetch_url_save_file(zip_url, local_zip_filename)
     words = get_words(local_zip_filename, id)
     word_counts = collections.Counter(words)
