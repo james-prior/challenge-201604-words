@@ -35,14 +35,14 @@ def get_book_txt_zip(zip_url, local_zip):
 def word_list_factory(local_zip, id):
     file_name = "%s.txt" % id
     zf = zipfile.ZipFile(local_zip)
-    word_list = zf.read(file_name)
-    word_list = word_list.replace('\r\n',' ').replace('\"','').split(' ')
-    word_list = filter(None, word_list)
-    word_list = [word.lower() for word in word_list]
-    word_list = [
+    whole_text = zf.read(file_name)
+    words = whole_text.replace('\r\n',' ').replace('\"','').split(' ')
+    words = filter(None, words)
+    words = [word.lower() for word in words]
+    words = [
         ''.join(c for c in word if c not in string.punctuation)
-        for word in word_list]
-    return word_list
+        for word in words]
+    return words
 
 def word_list_to_freq_dict(wordlist):
     wordfreq = [wordlist.count(p) for p in wordlist]
