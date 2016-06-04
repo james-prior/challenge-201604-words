@@ -53,7 +53,7 @@ def test(results):
     Traceback(most recent call last):
     File "/var/task/lambda_function.py", line 73, in lambda_handler
     test(sorted_count_word_tuples) File "/var/task/lambda_function.py", line 57, in test
-    raise Exception(exception)
+    raise Exception(exception_message)
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
 
@@ -61,11 +61,11 @@ def test(results):
         word = result_set[1]
         match = re.match(r'\b[a-z]+\b', word)
         if not match:
-            exception = (
+            exception_message = (
                 "if you got word problems I feel bad for you son.  "
                 "I got 99 problems, but \" %s \" aint one" % word
             )
-            raise Exception(exception)
+            raise Exception(exception_message)
     return True
 
 def upload_to_s3(id, word_counts):
