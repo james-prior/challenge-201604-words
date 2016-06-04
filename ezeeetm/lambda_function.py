@@ -25,16 +25,16 @@ def url_factory(id):
     print(url)
     return url
 
-def get_book_txt_zip(zip_url, local_zip):
+def get_book_txt_zip(zip_url, local_zip_filename):
     resp = requests.get(zip_url, stream=True)
-    with open(local_zip, 'wb') as f:
+    with open(local_zip_filename, 'wb') as f:
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
 
-def get_words(local_zip, id):
+def get_words(local_zip_filename, id):
     file_name = "%s.txt" % id
-    zf = zipfile.ZipFile(local_zip)
+    zf = zipfile.ZipFile(local_zip_filename)
     text = zf.read(file_name).lower()
     # Remove punctuation.
     text = ''.join(c for c in text if c not in string.punctuation)
@@ -75,22 +75,22 @@ def upload_to_s3(id, word_counts):
     body = json.dumps(word_counts)
     s3.Object(bucket, key).put(Body=body)
 
-def clean_up(local_zip):
-    os.remove(local_zip)
+def clean_up(local_zip_filename):
+    os.remove(local_zip_filename)
 
 def lambda_handler(event, context):
     id = event['id']
-    local_zip = "/tmp/%s.zip" % id
+    local_zip_filename = "/tmp/%s.zip" % id
     print(id)
-    print(local_zip)
+    print(local_zip_filename)
     
     zip_url = url_factory(id)
-    get_book_txt_zip(zip_url, local_zip)
-    words = get_words(local_zip, id)
+    get_book_txt_zip(zip_url, local_zip_filename)
+    words = get_words(local_zip_filename, id)
     word_counts = collections.Counter(words)
     most_common_words = word_counts.most_common(10)
     test(most_common_words)
     upload_to_s3(id, word_counts)
     
     print(most_common_words)
-    clean_up()
+    clean_up(local_zip_filename)
