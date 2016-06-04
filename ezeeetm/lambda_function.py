@@ -52,7 +52,7 @@ def test(most_common_words):
     if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one: Exception
     Traceback(most recent call last):
     File "/var/task/lambda_function.py", line 73, in lambda_handler
-    test(sorted_count_word_tuples) File "/var/task/lambda_function.py", line 57, in test
+    test(most_common_words) File "/var/task/lambda_function.py", line 57, in test
     raise Exception(exception_message)
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
