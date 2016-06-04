@@ -35,10 +35,9 @@ def get_book_txt_zip(zip_url, local_zip):
 def word_list_factory(local_zip, id):
     file_name = "%s.txt" % id
     zf = zipfile.ZipFile(local_zip)
-    whole_text = zf.read(file_name)
-    words = whole_text.replace('\r\n',' ').replace('\"','').split(' ')
+    whole_lower_text = zf.read(file_name).lower()
+    words = whole_lower_text.replace('\r\n',' ').replace('\"','').split(' ')
     words = filter(None, words)
-    words = [word.lower() for word in words]
     words = [
         ''.join(c for c in word if c not in string.punctuation)
         for word in words]
