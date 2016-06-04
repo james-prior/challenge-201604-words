@@ -43,7 +43,7 @@ def get_words(local_zip, id):
     return words
 
 def count_words(words):
-    counts = [words.count(p) for p in words]
+    counts = (words.count(p) for p in words)
     return dict(zip(words, counts))
 
 def sort_word_counts(word_counts):
