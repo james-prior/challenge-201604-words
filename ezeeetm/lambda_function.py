@@ -37,7 +37,7 @@ def word_list_factory(local_zip, id):
     zf = zipfile.ZipFile(local_zip)
     whole_lower_text = zf.read(file_name).lower()
     words = whole_lower_text.replace('\r\n',' ').replace('\"','').split(' ')
-    words = filter(None, words)
+    words = filter(None, words)  # Removes empty strings.
     words = [
         ''.join(c for c in word if c not in string.punctuation)
         for word in words]
