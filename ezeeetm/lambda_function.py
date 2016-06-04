@@ -11,14 +11,15 @@ import json
 def url_factory(id):
     try:
         if id <= 9:
-            path = '/0'
+            path = '0'
         else:
-            path = ""
+            directories = []
             id_array = [int(i) for i in str(id)]
             del id_array[-1]
             for i in id_array:
-                path += "/%s" % i
-        url = "http://www.gutenberg.lib.md.us%s/%s/%s.zip" % (path, id, id)
+                directories.append(str(i))
+            path = '/'.join(directories)
+        url = "http://www.gutenberg.lib.md.us/%s/%s/%s.zip" % (path, id, id)
     except ValueError:
         raise Exception('BAD ID, PLEASE TRY AN INTEGER VALUE FOR ID...')
     print(url)
