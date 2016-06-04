@@ -32,9 +32,9 @@ def fetch_url_save_file(url, filename):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
 
-def get_words(local_zip_filename, id):
+def get_words(zip_filename, id):
     file_name = "%s.txt" % id
-    zf = zipfile.ZipFile(local_zip_filename)
+    zf = zipfile.ZipFile(zip_filename)
     text = zf.read(file_name).lower()
     # Remove punctuation.
     text = ''.join(c for c in text if c not in string.punctuation)
