@@ -47,7 +47,7 @@ def count_words(words):
     return dict(zip(words, counts))
 
 def sort_word_counts(word_counts):
-    aux = [(word_counts[key], key) for key in word_counts]
+    aux = [(count, word) for word, count in word_counts.items()]
     aux.sort()
     aux.reverse()
     return aux[:10]
