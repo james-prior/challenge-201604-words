@@ -10,16 +10,18 @@ import json
 
 def url_factory(id):
     try:
-        if id <= 9:
-            directories = ['0']
-        else:
-            digits = list(str(id))
-            directories = digits[:-1]
-        directories.append(str(id))
-        path = '/'.join(directories)
-        url = "http://www.gutenberg.lib.md.us/%s/%s.zip" % (path, id)
+        is_single_digit = id <= 9
     except ValueError:
         raise Exception('BAD ID, PLEASE TRY AN INTEGER VALUE FOR ID...')
+
+    if is_single_digit:
+        directories = ['0']
+    else:
+        digits = list(str(id))
+        directories = digits[:-1]
+    directories.append(str(id))
+    path = '/'.join(directories)
+    url = "http://www.gutenberg.lib.md.us/%s/%s.zip" % (path, id)
     print(url)
     return url
 
