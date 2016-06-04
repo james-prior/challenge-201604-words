@@ -42,7 +42,7 @@ def get_words(zip_filename, id):
     words = filter(None, words)  # Removes empty strings.
     return words
 
-def test(results):
+def test(most_common_words):
     """This function tests that words in result sets satisfy the
     definition in README.md
 
@@ -57,8 +57,7 @@ def test(results):
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
 
-    for result_set in results:
-        word = result_set[1]
+    for word, count in most_common_words:
         match = re.match(r'\b[a-z]+\b', word)
         if not match:
             exception_message = (
