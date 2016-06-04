@@ -32,7 +32,7 @@ def get_book_txt_zip(zip_url, local_zip):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
 
-def word_list_factory(local_zip, id):
+def get_words(local_zip, id):
     file_name = "%s.txt" % id
     zf = zipfile.ZipFile(local_zip)
     text = zf.read(file_name).lower()
@@ -96,7 +96,7 @@ def lambda_handler(event, context):
     
     zip_url = url_factory(id)
     get_book_txt_zip(zip_url, local_zip)
-    word_list = word_list_factory(local_zip, id)
+    word_list = get_words(local_zip, id)
     word_freq_list = word_list_to_freq_dict(word_list)
     word_freq_list_sorted = sort_freq_dict(word_freq_list)
     test(word_freq_list_sorted)
