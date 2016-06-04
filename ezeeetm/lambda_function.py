@@ -60,11 +60,9 @@ def test(word_counts):
     for word, count in word_counts:
         match = re.match(r'\b[a-z]+\b', word)
         if not match:
-            exception_message = (
+            raise Exception(
                 "if you got word problems I feel bad for you son.  "
-                "I got 99 problems, but \" %s \" aint one" % word
-            )
-            raise Exception(exception_message)
+                "I got 99 problems, but \" %s \" aint one" % word)
     return True
 
 def upload_to_s3(id, word_counts):
