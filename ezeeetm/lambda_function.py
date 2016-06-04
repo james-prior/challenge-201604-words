@@ -59,8 +59,8 @@ def test(results):
 
     for result_set in results:
         word = result_set[1]
-        match_obj = re.match(r'\b[a-z]+\b', word)
-        if not match_obj:
+        match = re.match(r'\b[a-z]+\b', word)
+        if not match:
             exception = (
                 "if you got word problems I feel bad for you son.  "
                 "I got 99 problems, but \" %s \" aint one" % word
