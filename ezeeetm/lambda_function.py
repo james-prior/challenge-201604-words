@@ -42,7 +42,7 @@ def get_words(zip_filename, id):
     words = filter(None, words)  # Removes empty strings.
     return words
 
-def test(most_common_words):
+def test(word_counts):
     """This function tests that words in result sets satisfy the
     definition in README.md
 
@@ -52,12 +52,12 @@ def test(most_common_words):
     if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one: Exception
     Traceback(most recent call last):
     File "/var/task/lambda_function.py", line 73, in lambda_handler
-    test(most_common_words) File "/var/task/lambda_function.py", line 57, in test
+    test(word_counts) File "/var/task/lambda_function.py", line 57, in test
     raise Exception(exception_message)
     Exception: if you got word problems I feel bad for you son. I got 99 problems, but " This-Word " aint one
     """
 
-    for word, count in most_common_words:
+    for word, count in word_counts:
         match = re.match(r'\b[a-z]+\b', word)
         if not match:
             exception_message = (
