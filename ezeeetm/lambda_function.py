@@ -42,14 +42,6 @@ def get_words(local_zip, id):
     words = filter(None, words)  # Removes empty strings.
     return words
 
-def count_words(words):
-    counts = (words.count(p) for p in words)
-    return zip(counts, words)
-
-def sort_count_word_tuples(count_word_tuples):
-    sorted_count_word_tuples = sorted(count_word_tuples, reverse=True)
-    return sorted_count_word_tuples[:10]
-
 def test(results):
     """This function tests that words in result sets satisfy the
     definition in README.md
@@ -95,10 +87,10 @@ def lambda_handler(event, context):
     zip_url = url_factory(id)
     get_book_txt_zip(zip_url, local_zip)
     words = get_words(local_zip, id)
-    count_word_tuples = count_words(words)
-    sorted_count_word_tuples = sort_count_word_tuples(count_word_tuples)
-    test(sorted_count_word_tuples)
+    word_counts = collections.Counter(words)
+    most_common_words = word_counts.most_common(10)
+    test(most_common_words)
     upload_to_s3(id, word_counts)
     
-    print(sorted_count_word_tuples)
+    print(most_common_words)
     clean_up()
