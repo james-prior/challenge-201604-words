@@ -14,6 +14,12 @@ def strip_header(lines):
             pass_on = True
 
 
+def strip_header(lines):
+    for line in lines:
+        if line.startswith(TEXT_BOUNDARY):
+            yield from lines
+
+
 def strip_footer(lines):
     pass_on = True
     for line in lines:
@@ -21,7 +27,7 @@ def strip_footer(lines):
             if line.startswith(TEXT_BOUNDARY):
                 pass_on = False
             else:
-                yield line.strip()  # This strip is superfluous.
+                yield line.strip()
     return stripped_lines
 
 
