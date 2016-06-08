@@ -5,13 +5,6 @@ MAX_N_VOCABULARY_WORDS = 50000
 TEXT_BOUNDARY = '***'
 
 
-def read_lines(f):
-    for line in f:
-        yield line
-    # Of course, f.readlines() or just iterating through r would have sufficed.
-    # So this function can be omitted.
-
-
 def strip_header(lines):
     pass_on = False
     for line in lines:
@@ -42,7 +35,7 @@ def get_words_from_lines(lines):
 
 
 def parse(f):
-    return get_words_from_lines(strip_all(read_lines(f)))
+    return get_words_from_lines(strip_all(f))
 
 
 def build_dataset(words):
