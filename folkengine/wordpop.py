@@ -1,4 +1,5 @@
 import collections
+from itertools import takewhile
 
 MAX_N_VOCABULARY_WORDS = 50000
 
@@ -21,14 +22,10 @@ def strip_header(lines):
 
 
 def strip_footer(lines):
-    pass_on = True
-    for line in lines:
-        if pass_on:
-            if line.startswith(TEXT_BOUNDARY):
-                pass_on = False
-            else:
-                yield line.strip()
-    return stripped_lines
+    return takewhile(
+        lambda line: not line.startswith(TEXT_BOUNDARY),
+        lines,
+    )
 
 
 def strip_header_and_footer(lines):
