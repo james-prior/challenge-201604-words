@@ -25,7 +25,7 @@ def strip_footer(lines):
     return stripped_lines
 
 
-def strip_all(lines):
+def strip_header_and_footer(lines):
     return strip_footer(strip_header(lines))
 
 
@@ -35,7 +35,7 @@ def get_words_from_lines(lines):
 
 
 def parse(f):
-    return get_words_from_lines(strip_all(f))
+    return get_words_from_lines(strip_header_and_footer(f))
 
 
 def build_dataset(words):
