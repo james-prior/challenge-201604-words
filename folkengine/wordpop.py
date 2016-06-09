@@ -13,14 +13,14 @@ def strip_header(lines):
 
 
 def strip_footer(lines):
-    return takewhile(
+    yield from takewhile(
         lambda line: not line.startswith(TEXT_BOUNDARY),
         lines,
     )
 
 
 def strip_header_and_footer(lines):
-    return strip_footer(strip_header(lines))
+    yield from strip_footer(strip_header(lines))
 
 
 def get_words_from_lines(lines):
@@ -29,7 +29,7 @@ def get_words_from_lines(lines):
 
 
 def get_words_from_gutenberg_file(f):
-    return get_words_from_lines(strip_header_and_footer(f))
+    yield from get_words_from_lines(strip_header_and_footer(f))
 
 
 def build_dataset(words):
