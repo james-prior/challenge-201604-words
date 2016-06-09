@@ -17,8 +17,11 @@ def strip_header(lines):
         lambda line: not line.startswith(TEXT_BOUNDARY),
         lines
     )
-    next(a)  # Ignore the TEXT_BOUNDARY line.
-    return a
+    b = dropwhile(
+        lambda i_line: i_line[0] < 1,  # Ignore first line (TEXT_BOUNDARY line).
+        enumerate(a)
+    )
+    return b
 
 
 def strip_footer(lines):
