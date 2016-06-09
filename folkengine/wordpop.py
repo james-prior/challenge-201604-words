@@ -28,7 +28,7 @@ def get_words_from_lines(lines):
         yield from line.lower().split()
 
 
-def parse(f):
+def get_words_from_gutenberg_file(f):
     return get_words_from_lines(strip_header_and_footer(f))
 
 
