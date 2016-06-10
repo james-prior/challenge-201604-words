@@ -1,35 +1,34 @@
 import collections
 
+MAX_N_VOCABULARY_WORDS = 50000
+
 TEXT_BOUNDARY = '***'
 
 
-def convert_file_to_line_list(f):
-    file_lines = []
+def read_lines(f):
     for line in f:
-        file_lines.append(line)
-    return file_lines
+        yield line
+    # Of course, f.readlines() or just iterating through r would have sufficed.
+    # So this function can be omitted.
 
 
 def strip_header(lines):
     pass_on = False
-    stripped_lines = []
     for line in lines:
         if pass_on and line != '\n':
-            stripped_lines.append(line.strip())
+            yield line.strip()
         elif line.startswith(TEXT_BOUNDARY):
             pass_on = True
-    return stripped_lines
 
 
 def strip_footer(lines):
     pass_on = True
-    stripped_lines = []
     for line in lines:
         if pass_on:
             if line.startswith(TEXT_BOUNDARY):
                 pass_on = False
             else:
-                stripped_lines.append(line.strip())
+                yield line.strip()  # This strip is superfluous.
     return stripped_lines
 
 
@@ -37,22 +36,16 @@ def strip_all(lines):
     return strip_footer(strip_header(lines))
 
 
-def lines_to_word_array(lines):
-    words = []
+def get_words_from_lines(lines):
     for line in lines:
-        words.extend(line.split())
-    return map(lambda x:x.lower(), words)
+        yield from line.lower().split()
 
 
 def parse(f):
-    return lines_to_word_array(strip_all(convert_file_to_line_list(f)))
-
-vocabulary_size = 50000
+    return get_words_from_lines(strip_all(read_lines(f)))
 
 
 def build_dataset(words):
-  count = []
-  count.extend(collections.Counter(words).most_common(vocabulary_size - 1))
-  return count
-
-
+    # What's the - 1 in (MAX_N_VOCABULARY_WORDS) - 1 for?
+    count = collections.Counter(words).most_common(MAX_N_VOCABULARY_WORDS - 1)
+    return count
